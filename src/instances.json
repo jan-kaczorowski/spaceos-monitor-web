@@ -1,0 +1,49 @@
+{
+    "instances": [
+        {
+            "url": "https://dev.spaceos.io",
+            "name": "DEV DEV",
+            "isProd": false
+        },
+        {
+            "url": "https://tower42.spaceos.io",
+            "name": "Tower42 PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://community.mixer.work",
+            "name": "MixerWork PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://tlv.sosa.co",
+            "name": "SOSA TLV PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://nyc.sosa.co",
+            "name": "SOSA NYC PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://holzmarkt1.spaceos.io",
+            "name": "Holzmark1 (Bauwens) PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://work.laeva2.ee",
+            "name": "Laeva2 (Central Working) PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://os.newlab.com",
+            "name": "NewLab PROD",
+            "isProd": true
+        },
+        {
+            "url": "https://app.theheart.tech",
+            "name": "The Heart PROD",
+            "isProd": true
+        }                   
+    ]
+}
