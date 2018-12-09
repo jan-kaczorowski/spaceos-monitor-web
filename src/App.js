@@ -1,18 +1,31 @@
 import React, { Component } from 'react';
 import StatusChecker from './components/StatusChecker'
-//import { Table } from 'reactstrap';
+import GeneralInfo from './components/GeneralInfo'
+import SideInfo from './components/SideInfo'
+import { Container, Row, Col } from 'reactstrap';
+
 import './App.css';
 
 class App extends Component {
   render() {
     
     return (
-      <div className="App">
-        <header className="App-header">
-          <StatusChecker></StatusChecker>
-        </header>
-        
-      </div>
+      <Container fluid>
+
+        <Row>
+          <Col>
+            <GeneralInfo/>
+          </Col>
+          <Col>
+            <SideInfo counter='5'/>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <StatusChecker></StatusChecker>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
