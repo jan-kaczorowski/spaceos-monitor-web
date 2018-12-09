@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import StatusChecker from './components/StatusChecker'
+//import { Table } from 'reactstrap';
 import './App.css';
 
 class App extends Component {

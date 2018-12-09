@@ -3,8 +3,10 @@
 }
 
 .icon {
-  animation: App-logo-spin infinite 1s linear;
   height: 40px;
+}
+.icon-react {
+  animation: App-logo-spin infinite 2s linear;
 }
 
 .App-header {
