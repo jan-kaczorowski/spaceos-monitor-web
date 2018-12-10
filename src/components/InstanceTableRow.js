@@ -13,12 +13,11 @@ class InstanceTableRow extends Component {
             identifier: this.props.identifier,
             instance: this.props.instance
         }
-        console.log(this.state.identifier)
     }
     hashToLink(instance) {
         const hash = instance.health.git_commit_data.commit_hash;
         const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
-        return <a className="instance-link" href={linkUrl} target="_blank">#{hash}</a>      
+        return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>      
     }
 
     render() {
@@ -28,7 +27,7 @@ class InstanceTableRow extends Component {
                 <tr>
                 <td>{this.state.identifier+1}</td>
                 <td>
-                    <a className="instance-link btn btn-outline-primary btn-block" href={instance.url}>{instance.url}</a>      
+                    <a className="instance-link btn btn-outline-primary btn-block" href={instance.url} target="_blank" rel="noopener noreferrer">{instance.url}</a>      
                 </td>
                 <td>
                     { instance.isProd ? (<Badge color="primary">PROD</Badge>) : (<Badge color="secondary">NON-PROD</Badge>) } 

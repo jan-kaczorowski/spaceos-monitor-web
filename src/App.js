@@ -3,6 +3,8 @@ import StatusChecker from './components/StatusChecker'
 import GeneralInfo from './components/GeneralInfo'
 import SideInfo from './components/SideInfo'
 import { Container, Row, Col } from 'reactstrap';
+import { connect } from 'react-redux'
+
 
 import './App.css';
 
@@ -17,7 +19,7 @@ class App extends Component {
             <GeneralInfo/>
           </Col>
           <Col>
-            <SideInfo counter='5'/>
+            <SideInfo/>
           </Col>
         </Row>
         <Row>
@@ -30,4 +32,15 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    globalTimer: state.globalTimer
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+      decrementGlobalTimer: ()=> dispatch({type: 'DECREMENT_GLOBAL_TIMER'})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InstanceTableRow from './InstanceTableRow'
 import { Table } from 'reactstrap';
+import { connect } from 'react-redux'
 class StatusChecker extends Component {
     constructor(props) {
         super(props)
@@ -9,30 +10,21 @@ class StatusChecker extends Component {
             instances: require('../instances.json').instances,
             timeout: 15 
         }
-        console.log('state',this.state)
+
         this.updateInstancesHealthStatuses()
         this.timerId = setInterval(this.decreaseTimeout.bind(this), 1000);
     }
 
     decreaseTimeout() {
-        //console.log('STATE SS',this.state)
-        let newTimeoutVal
-        
-        if(this.state.timeout === 0) {
-            newTimeoutVal = 15
+        this.props.decrementGlobalTimer()
+        console.log('GLOBAL TIMER: '+this.props.globalTimer)
+        if(this.props.globalTimer === 0) {
             this.updateInstancesHealthStatuses()
-        } else {
-            newTimeoutVal = this.state.timeout - 1
-        }
-        this.setState(state => {
-            this.state.timeout = newTimeoutVal
-            
-            return state;
-        }) 
-        console.log('TIMEOUT: '+this.state.timeout)  
+        } 
     }
 
     updateInstancesHealthStatuses() {
+        console.log('Updating instance status!')
         this.state.instances.map((instance,i) => this.checkInstanceHealth(instance,i) )
     }
 
@@ -63,8 +55,8 @@ class StatusChecker extends Component {
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>
-                            <th colSpan="4">Common</th>
-                            <th colSpan="3">Commit data</th>
+                            <th colSpan="4">Common info</th>
+                            <th colSpan="3">Code status info</th>
                         </tr>
                         <tr>
                             <th>#</th>
@@ -92,4 +84,18 @@ class StatusChecker extends Component {
     }
 }
 
-export default StatusChecker
+
+const mapStateToProps = (state) => {
+    return {
+      globalTimer: state.globalTimer
+    }
+  }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        decrementGlobalTimer: ()=> dispatch({type: 'DECREMENT_GLOBAL_TIMER'})
+    }
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(StatusChecker);
+
+//export default StatusChecker
