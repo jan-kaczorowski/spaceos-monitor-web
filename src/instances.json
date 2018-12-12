@@ -3,47 +3,170 @@
         {
             "url": "https://dev.spaceos.io",
             "name": "DEV DEV",
-            "isProd": false
+            "isProd": false,
+            "client": "---"
         },
         {
             "url": "https://tower42.spaceos.io",
             "name": "Tower42 PROD",
-            "isProd": true
+            "isProd": true,
+            "client": "Tower42"
         },
         {
             "url": "https://community.mixer.work",
             "name": "MixerWork PROD",
-            "isProd": true
+            "isProd": true,
+            "client": "MixerWork"
         },
         {
             "url": "https://tlv.sosa.co",
             "name": "SOSA TLV PROD",
-            "isProd": true
+            "isProd": true,
+            "client": "SOSA"
         },
         {
             "url": "https://nyc.sosa.co",
             "name": "SOSA NYC PROD",
-            "isProd": true
+            "isProd": true,
+            "client": "SOSA"
         },
         {
             "url": "https://holzmarkt1.spaceos.io",
             "name": "Holzmark1 (Bauwens) PROD",
-            "isProd": true
+            "isProd": true,
+            "client": "Bauwens Digital"
+        },
+        {
+            "url": "http://stg-holzmarkt1.spaceos.io",
+            "name": "Holzmark1 (Bauwens) STG",
+            "isProd": false,
+            "client": "Bauwens Digital"
         },
         {
             "url": "https://work.laeva2.ee",
-            "name": "Laeva2 (Central Working) PROD",
-            "isProd": true
+            "name": "Laeva2 (CreativeUnion) PROD",
+            "isProd": true,
+            "client": "Creative Union"
+        },
+        {
+            "url": "https://stg-creativeunion.spaceos.io",
+            "name": "Laeva2 (CreativeUnion) STG",
+            "isProd": false,
+            "client": "Creative Union"
         },
         {
             "url": "https://os.newlab.com",
             "name": "NewLab PROD",
-            "isProd": true
+            "isProd": true,
+            "client": "NewLab"
         },
         {
             "url": "https://app.theheart.tech",
             "name": "The Heart PROD",
-            "isProd": true
-        }                   
+            "isProd": true,
+            "client": "The Heart"
+        }, 
+        {
+            "url": "https://app.business.link",
+            "name": "BusinessLink PROD",
+            "isProd": true,
+            "client": "BusinessLink"
+        },    
+        {
+            "url": "https://stg-businesslink.spaceos.io",
+            "name": "BusinessLink STG",
+            "isProd": false,
+            "client": "BusinessLink"
+        },    
+        {
+            "url": "https://stg-newlab.spaceos.io",
+            "name": "NewLab STG",
+            "isProd": false,
+            "client": "NewLab"
+        },    
+        {
+            "url": "https://stg-mixerwork.spaceos.io",
+            "name": "STG Mixerwork",
+            "isProd": false,
+            "client": "MixerWork"
+        },
+        {
+            "url": "https://stg-sosa-tlv.spaceos.io",
+            "name": "STG SOSA TLV",
+            "isProd": false,
+            "client": "SOSA"
+        },
+        {
+            "url": "https://stg-sosa-nyc.spaceos.io",
+            "name": "STG SOSA NYC",
+            "isProd": false,
+            "client": "SOSA"
+        },
+        {
+            "url": "http://stg-tower42.spaceos.io",
+            "name": "STG Tower42",
+            "isProd": false,
+            "client": "Tower42"
+        },
+        {
+            "url": "https://community.centralworking.com",
+            "name": "CentralWorking PROD",
+            "isProd": true,
+            "client": "Central Working"
+        },                   
+        {
+            "url": "https://stg-centralworking.spaceos.io",
+            "name": "CentralWorking STG",
+            "isProd": false,
+            "client": "Central Working"
+        },
+        {
+            "url": "https://feature1.spaceos.io",
+            "name": "Feature #1",
+            "isProd": false,
+            "client": "---"
+        },                                                       
+        {
+            "url": "https://feature2.spaceos.io",
+            "name": "Feature #2",
+            "isProd": false,
+            "client": "---"
+        },                             
+        {
+            "url": "https://feature3.spaceos.io",
+            "name": "Feature #3",
+            "isProd": false,
+            "client": "---"
+        },                             
+        {
+            "url": "https://feature4.spaceos.io",
+            "name": "Feature #4",
+            "isProd": false,
+            "client": "---"
+        },                             
+        {
+            "url": "https://feature5.spaceos.io",
+            "name": "Feature #5",
+            "isProd": false,
+            "client": "---"
+        },                             
+        {
+            "url": "https://feature6.spaceos.io",
+            "name": "Feature #6",
+            "isProd": false,
+            "client": "---"
+        },                             
+        {
+            "url": "https://feature7.spaceos.io",
+            "name": "Feature #7",
+            "isProd": false,
+            "client": "---"
+        },                             
+        {
+            "url": "https://feature8.spaceos.io",
+            "name": "Feature #8",
+            "isProd": false,
+            "client": "---"
+        }                          
     ]
 }

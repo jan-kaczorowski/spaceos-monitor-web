@@ -7,8 +7,12 @@ class StatusChecker extends Component {
         super(props)
 
         this.state = {
-            instances: require('../instances.json').instances,
-            timeout: 15 
+            instances: require('../instances.json')
+                            .instances.map((el, i) => {
+                                    el.errors = null
+                                    return el
+                                })
+                            .sort((a, b) => a.client.localeCompare(b.client))
         }
 
         this.updateInstancesHealthStatuses()
@@ -24,42 +28,53 @@ class StatusChecker extends Component {
     }
 
     updateInstancesHealthStatuses() {
-        console.log('Updating instance status!')
-        this.state.instances.map((instance,i) => this.checkInstanceHealth(instance,i) )
+        this.state.instances.map((instance, i) => this.checkInstanceHealth(instance, i) )
     }
 
     checkInstanceHealth(instance,i) {
         fetch(instance.url+'/status')
             .then(response => response.json())
             .then(data => {
-                this.setState(state => {
-                    state.instances[i].health = data;
-                    state.instances[i].key = i ;
-                    return state;
-                })
+                instance.health = data;
+                instance.errors = null ;
+                this.setState(state => { state.instances[i] = instance; return state;  })
             })
             .catch((errors)=> {
-                console.log('ERRORS',errors)
-                this.setState(state => {
-                    state.instances[i].key = i ;
-                    state.instances[i].errors = errors ;
-                    return state;
-                })
+                instance.health = null;
+                instance.errors = {"error": errors} ;
+                this.setState(state => { state.instances[i] = instance; return state;  })
             });
+        if(instance.url === 'https://dev.spaceos.io') {
+            fetch(instance.url+'/commit_info.txt')
+            .then(data => {
+                console.log('COMMIT INFO RETURN:',data);
+                // instance.health = data;
+                // instance.errors = null ;
+                // this.setState(state => { state.instances[i] = instance; return state;  })
+            })
+            .catch((errors)=> {
+                console.info('err')
+                // instance.health = null;
+                // instance.errors = {"error": errors} ;
+                // this.setState(state => { state.instances[i] = instance; return state;  })
+            });
+        }
+
     }
 
     render() {
-        
         return(
             <div>
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>
-                            <th colSpan="4">Common info</th>
-                            <th colSpan="3">Code status info</th>
+                            <th colSpan="5">Common info</th>
+                            <th colSpan="4">Code status info</th>
+                            <th colSpan="3"></th>
                         </tr>
                         <tr>
                             <th>#</th>
+                            <th>Client</th>
                             <th>Instance</th>
                             <th>Type</th>
                             <th>Health</th>
@@ -67,13 +82,16 @@ class StatusChecker extends Component {
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>
+                            <th colSpan="3"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            this.state.instances.map(function(instance,i){
+                            //.sort(function(a,b){return b.isProd-a.isProd})
+                            this.state.instances
+                                .map(function(instance,i){
                                 return(
-                                    <InstanceTableRow key={i} identifier={i} instance={instance}></InstanceTableRow>
+                                    <InstanceTableRow identifier={i} instance={instance}></InstanceTableRow>
                                 )
                             })
                         }
@@ -96,6 +114,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(StatusChecker);
-
-//export default StatusChecker
+export default connect(mapStateToProps, mapDispatchToProps)(StatusChecker)

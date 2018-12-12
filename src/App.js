@@ -5,15 +5,12 @@ import SideInfo from './components/SideInfo'
 import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux'
 
-
 import './App.css';
 
 class App extends Component {
   render() {
-    
     return (
       <Container fluid>
-
         <Row>
           <Col>
             <GeneralInfo/>

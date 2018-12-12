@@ -1,14 +1,13 @@
 
 const initialState = {
-    globalTimer: 15
+    globalTimer: 30
 }
 
 const reducer = (state = initialState, action) => {
     const newState = {...state}
 
     if(action.type === 'DECREMENT_GLOBAL_TIMER') {
-        console.log('Decrement!')
-        if(newState.globalTimer === 0) { newState.globalTimer = 15 }
+        if(newState.globalTimer === 0) { newState.globalTimer = initialState.globalTimer }
         else {newState.globalTimer--}
     }
     return newState
