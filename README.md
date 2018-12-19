@@ -3,10 +3,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Monitor instancji SpaceOS-a
 
 ten mały klient docelowo bedzie połączony z backendem i wypuszczony produkcyjnie.
-Póki co proponuję odpalać to sobie lokalnie.
-`npm install | yarn`
-`npm start` i już!
+Póki co proponuję odpalać to sobie lokalnie:
 
+    npm install 
+
+lub:
+
+    yarn
+
+A nastepnie:
+
+    npm start
+    PORT=3001 npm start
 
 
 
