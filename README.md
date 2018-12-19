@@ -1,5 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Monitor instancji SpaceOS-a
+
+ten mały klient docelowo bedzie połączony z backendem i wypuszczony produkcyjnie.
+Póki co proponuję odpalać to sobie lokalnie.
+`npm install | yarn`
+`npm start` i już!
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
