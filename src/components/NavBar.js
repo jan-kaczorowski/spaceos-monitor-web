@@ -30,6 +30,17 @@ class NavBar extends React.Component {
         {caption: 'Demo', slug: 'demo'},
         {caption: 'Feature', slug: 'feature'},
         {caption: 'All', slug: null}
+      ],
+      clients: [
+          "SOSA",
+          "MixerWork",
+          "Tower42",
+          "Creative Union",
+          "NewLab",
+          "Bauwens Digital",
+          "BusinessLink",
+          "The Heart",
+          "Central Working"
       ]
     };
   }
@@ -39,7 +50,7 @@ class NavBar extends React.Component {
     });
   }
 
-  buttonsForInstanceTypes() {
+  renderButtonsForInstanceTypes() {
     return this.state.instanceTypes.map((elem) => {
         return (
             <NavItem>
@@ -49,6 +60,15 @@ class NavBar extends React.Component {
             </NavItem>
         );
     });
+  }
+
+  renderDropdownsForClients() {
+      return this.state.clients.map( elem => {
+          return (
+            <DropdownItem onClick={() => this.props.setInstanceNameFilter(elem)} >{elem}</DropdownItem>
+          )
+      })
+
   }
 
   activeInstanceTypeFilter() {
@@ -72,26 +92,23 @@ class NavBar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavbarBrand>Filters:</NavbarBrand>
-                {this.buttonsForInstanceTypes()}
+                {this.renderButtonsForInstanceTypes()}
               <NavItem>
                 <Input addon type="text"
                      placeholder="Seach instances.." 
                      value={this.props.instanceNameFilter} 
                      onChange={evt => this.handleChangeNameFilter(evt)}/>
               </NavItem>
-              {/* <UncontrolledDropdown nav inNavbar>
+              <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                    {this.activeInstanceTypeFilter()}
+                    Clients
                 </DropdownToggle>
                 <DropdownMenu right>
-                <DropdownItem onClick={() => this.props.setInstanceTypeFilter('dev')} >DEV</DropdownItem>
-                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('prod')} >PROD</DropdownItem>
-                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('demo')} >DEMO</DropdownItem>
-                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('feature')} >FEATURE</DropdownItem>
+                  {this.renderDropdownsForClients()}
                   <DropdownItem divider />
-                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter(null)}>All types</DropdownItem>
+                  <DropdownItem onClick={() => this.props.setInstanceNameFilter(null)}>Clear name filter</DropdownItem>
                 </DropdownMenu>
-              </UncontrolledDropdown> */}
+              </UncontrolledDropdown>
             </Nav>
           </Collapse>
         </Navbar>
