@@ -86,8 +86,8 @@ class StatusChecker extends Component {
                     <thead>
                         <tr>
                             <th colSpan="5">Common info</th>
-                            <th colSpan="4">Code status info</th>
-                            <th colSpan="3"></th>
+                            <th colSpan="3">Backend status</th>
+                            <th colSpan="3">Frontend status</th>
                         </tr>
                         <tr>
                             <th>#</th>
@@ -95,11 +95,14 @@ class StatusChecker extends Component {
                             <th>Instance</th>
                             <th>Type</th>
                             <th>Health</th>
-                            <th>Commiter</th>
+                  
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>
-                            <th colSpan="3"></th>
+              
+                            <th>Commit Msg</th>
+                            <th>Commit Time</th>
+                            <th>Commit hash</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,20 +122,4 @@ class StatusChecker extends Component {
     }
 }
 
-
-// const mapStateToProps = (state) => {
-//     return {
-//       globalTimer: state.globalTimer,
-//       instanceTypeFilter: state.instanceTypeFilter,
-//       instanceNameFilter: state.instanceNameFilter
-//     }
-//   }
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         decrementGlobalTimer: () => dispatch({type: 'DECREMENT_GLOBAL_TIMER'}),
-//         setInstanceNameFilter: (str) => dispatch({type: 'APPLY_INSTANCE_NAME_FILTER', instanceNameFilter: str }),
-//         setInstanceTypeFilter: (instType) => dispatch({type: 'APPLY_INSTANCE_TYPE_FILTER', instanceTypeFilter: instType }) 
-//     }
-// }
-  
 export default connect(mapStateToProps, mapDispatchToProps)(StatusChecker)

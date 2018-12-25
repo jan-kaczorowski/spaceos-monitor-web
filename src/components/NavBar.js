@@ -54,7 +54,7 @@ class NavBar extends React.Component {
     return this.state.instanceTypes.map((elem) => {
         return (
             <NavItem>
-                <Button color={this.props.instanceTypeFilter === elem.slug ? 'primary' : 'default'}
+                <Button color={this.props.instanceTypeFilter === elem.slug ? 'primary' : 'secondary'}
                         onClick={() => this.props.setInstanceTypeFilter(elem.slug)} 
                 >{elem.caption}</Button>{'   '}
             </NavItem>
@@ -106,7 +106,7 @@ class NavBar extends React.Component {
                 <DropdownMenu right>
                   {this.renderDropdownsForClients()}
                   <DropdownItem divider />
-                  <DropdownItem onClick={() => this.props.setInstanceNameFilter(null)}>Clear name filter</DropdownItem>
+                  <DropdownItem onClick={() => this.props.setInstanceNameFilter('')}>Clear name filter</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>

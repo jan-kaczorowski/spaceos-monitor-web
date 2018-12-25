@@ -85,9 +85,9 @@ class InstanceTableRow extends Component {
                     <img src={checked} className="icon icon-checked" alt="icon-checked" />
                 </td>
     
-                <td>
+                {/* <td>
                     { instance.health.git_commit_data ? instance.health.git_commit_data.committer_name : ''  }
-                </td>
+                </td> */}
                 
                 <td>
                     { this.commitMsg(instance)   }
@@ -100,7 +100,15 @@ class InstanceTableRow extends Component {
                 <td>
                     { instance.health.git_commit_data ? this.hashToLink(instance) : ''  }
                 </td>
-                {this.buttonSection(instance)}
+                
+
+                <td>Web comm. msg</td>
+                <td>Web comm. time</td>
+                <td>Web comm. hash</td>
+
+
+
+
             </tr>
             )
         //errors
@@ -114,7 +122,7 @@ class InstanceTableRow extends Component {
                     <td colSpan="4">
                         Error occured when attempting to call <Badge color="secondary">GET /status</Badge> endpoint on this instance.
                     </td>
-                    {this.buttonSection(instance)}
+
                 </tr>
             )
         }
@@ -128,7 +136,7 @@ class InstanceTableRow extends Component {
                 <td colSpan="4">
                     Gathering info...
                 </td>
-                {this.buttonSection(instance)}
+
             </tr>
         )
     }
