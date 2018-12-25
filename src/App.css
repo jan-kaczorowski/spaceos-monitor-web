@@ -24,3 +24,6 @@
 .jumbotron {
   padding: 2rem 2rem !important;
 }
+ul.navbar-nav > li.nav-item > button {
+  margin-right: 0.5em;
+}

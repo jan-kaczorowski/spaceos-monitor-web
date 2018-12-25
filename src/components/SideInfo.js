@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
 import { connect } from 'react-redux'
+import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 class SideInfo extends Component {
   constructor(props) {
     super(props)
@@ -43,29 +44,13 @@ class SideInfo extends Component {
                   <DropdownItem onClick={() => this.props.setInstanceTypeFilter(null)}>All types</DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>
-              <input addon type="text" 
-                           value={this.props.instanceNameFilter} 
-                           onChange={evt => this.handleChangeNameFilter(evt)} 
-                           aria-label="Checkbox for following text input" />
+              <Input addon type="text" 
+                     value={this.props.instanceNameFilter} 
+                     onChange={evt => this.handleChangeNameFilter(evt)}  />
             </div>
       </Jumbotron>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    globalTimer: state.globalTimer,
-    instanceTypeFilter: state.instanceTypeFilter,
-    instanceNameFilter: state.instanceNameFilter
-  }
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-      decrementGlobalTimer: () => dispatch({type: 'DECREMENT_GLOBAL_TIMER'}),
-      setInstanceNameFilter: (str) => dispatch({type: 'APPLY_INSTANCE_NAME_FILTER', instanceNameFilter: str }),
-      setInstanceTypeFilter: (instType) => dispatch({type: 'APPLY_INSTANCE_TYPE_FILTER', instanceTypeFilter: instType }) 
-  }
-}
-  
 export default connect(mapStateToProps, mapDispatchToProps)(SideInfo);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import InstanceTableRow from './InstanceTableRow'
 import { Table } from 'reactstrap';
 import { connect } from 'react-redux'
+import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 class StatusChecker extends Component {
     
     constructor(props) {
@@ -81,7 +82,6 @@ class StatusChecker extends Component {
     render() {
         return(
             <div>
-                <h5>Filtering by: type: {this.props.instanceTypeFilter}, name: {this.props.instanceNameFilter} </h5>
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>
@@ -120,19 +120,19 @@ class StatusChecker extends Component {
 }
 
 
-const mapStateToProps = (state) => {
-    return {
-      globalTimer: state.globalTimer,
-      instanceTypeFilter: state.instanceTypeFilter,
-      instanceNameFilter: state.instanceNameFilter
-    }
-  }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        decrementGlobalTimer: () => dispatch({type: 'DECREMENT_GLOBAL_TIMER'}),
-        setInstanceNameFilter: (str) => dispatch({type: 'APPLY_INSTANCE_NAME_FILTER', instanceNameFilter: str }),
-        setInstanceTypeFilter: (instType) => dispatch({type: 'APPLY_INSTANCE_TYPE_FILTER', instanceTypeFilter: instType }) 
-    }
-}
+// const mapStateToProps = (state) => {
+//     return {
+//       globalTimer: state.globalTimer,
+//       instanceTypeFilter: state.instanceTypeFilter,
+//       instanceNameFilter: state.instanceNameFilter
+//     }
+//   }
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         decrementGlobalTimer: () => dispatch({type: 'DECREMENT_GLOBAL_TIMER'}),
+//         setInstanceNameFilter: (str) => dispatch({type: 'APPLY_INSTANCE_NAME_FILTER', instanceNameFilter: str }),
+//         setInstanceTypeFilter: (instType) => dispatch({type: 'APPLY_INSTANCE_TYPE_FILTER', instanceTypeFilter: instType }) 
+//     }
+// }
   
 export default connect(mapStateToProps, mapDispatchToProps)(StatusChecker)

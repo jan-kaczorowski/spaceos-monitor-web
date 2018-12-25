@@ -66,7 +66,7 @@ class InstanceTableRow extends Component {
                     <a className="instance-link btn btn-outline-primary btn-block" href={instance.url} target="_blank" rel="noopener noreferrer">{instance.name}</a>      
                 </td>
                 <td>
-                    { instance.isProd ? (<Badge color="primary">PROD</Badge>) : (<Badge color="secondary">STG/DEV/FEAT</Badge>) } 
+                    <Badge color="primary">{instance.type.toUpperCase()}</Badge>
                 </td>
             </React.Fragment>
         )
