@@ -12,7 +12,7 @@ class CoreTableRowFragment extends React.Component {
     }
 
     hashToLink(instance) {
-        const hash = instance.health.git_commit_data.commit_hash;
+        const hash = instance.coreHealth.commit_hash;
         const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
         if(hash) {
             return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>  
@@ -22,7 +22,7 @@ class CoreTableRowFragment extends React.Component {
     }
 
     commitDate(instance) {
-        const timestamp = instance.health.git_commit_data.timestamp
+        const timestamp = instance.coreHealth.timestamp
         if(timestamp) {
             return <Moment date={new Date(timestamp)} format="D MMM YYYY" />
         } else {
@@ -31,34 +31,32 @@ class CoreTableRowFragment extends React.Component {
     }
 
     commitMsg(instance) {
-        if(instance.health.git_commit_data){
-            return instance.health.git_commit_data.commit_subject || '(no commit message. Is jenkins job configured right?)'
-        } else {
-            return '(no commit data available)'
-        }
+        return instance.coreHealth.commit_subject
     }
 
 
     render() {
         const instance = this.state.instance
-        if(instance.health) {
+        if(instance.coreHealth) {
             return (
                 <React.Fragment>
                     <td className="left-border">
-                        { instance.health.git_commit_data ? instance.health.git_commit_data.committer_name : ''  }
+                        { instance.coreHealth.committer_name }
                     </td>
                     <td className="commit-msg">
-                        { this.commitMsg(instance)   }
+                        { instance.coreHealth.commit_subject   }
                     </td>
                     <td>
-                        { instance.health.git_commit_data ? this.commitDate(instance) : ''  }
+                        { this.commitDate(instance) }
                     </td>
                     <td>
-                        { instance.health.git_commit_data ? this.hashToLink(instance) : ''  }
+                        { this.hashToLink(instance) }
                     </td>
                 </React.Fragment>
             )
-        } else return('')
+        } else return(
+            <td colSpan="4" className="commit-msg left-border">(No data available)</td>
+        )
 
     }
 }

@@ -4,7 +4,6 @@ import { Table, Progress, Badge } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import InstanceDetailsModal from './instance-table/InstanceDetailsModal'
-import Sound from 'react-sound';
 class StatusChecker extends Component {
     
     constructor(props) {
@@ -15,8 +14,7 @@ class StatusChecker extends Component {
         }
         this.updateInstancesHealthStatuses()
         this.timerId = setInterval(this.decreaseTimeout.bind(this), 1000);
-        this.soundJingle = React.createRef();
-        //this.audioFile = new Audio('sounds/bike_horn.mp3')
+        this.audioFile = new Audio('sounds/bamboo.mp3')
     }
 
     instanceFeed(instanceType, nameStr) {
@@ -40,8 +38,7 @@ class StatusChecker extends Component {
         this.props.decrementGlobalTimer()
         
         if(this.props.globalTimer === 0) {
-            //this.soundJingle.current.props.playStatus = Sound.status.PLAYING
-
+            this.audioFile.play()
             this.updateInstancesHealthStatuses()
         } 
     }
@@ -74,34 +71,40 @@ class StatusChecker extends Component {
         fetch(instance.url+'/status')
             .then(response => response.json())
             .then(data => {
-                instance.health = data;
+                instance.coreHealth = data.git_commit_data;
                 instance.errors = null ;
-                this.setState(state => { state.instances[i] = instance; return state;  })
+                this.setState(state => { state.instances[i] = instance; return state;  }, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
+                
             })
             .catch((errors)=> {
-                instance.health = null;
-                instance.errors = {"error": errors} ;
-                this.setState(state => { state.instances[i] = instance; return state;  })
+                instance.coreHealth = null;
+                instance.coreErrors = {"error": errors} ;
+
+                this.setState(state => { state.instances[i] = instance; return state;  }, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
             });
 
-        const allowedUrls = ['https://feature1.spaceos.io','https://feature2.spaceos.io']          
-        if(allowedUrls.includes(instance.url)) {
-            const web_status_url = instance.url+'/commit_info.json'
-            console.info(web_status_url)
-            fetch(web_status_url)
+        fetch(instance.url+'/commit_info.json')
             .then(response => response.json())
             .then(data => {
                 instance.webHealth = data
                 instance.webErrors = null
-                console.log('webHealth', data)
-                sessionStorage.setItem(instance.url, JSON.stringify(data))
-                this.setState(state => {state.instances[i] = instance; return state;})
+
+                this.setState(state => {state.instances[i] = instance; return state;}, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
             }) 
             .catch((errors)=> {
                 instance.webHealth = null;
-                sessionStorage.setItem(instance.url, JSON.stringify(errors))
+                instance.webErrors = {"error": errors} ;
+                this.setState(state => { state.instances[i] = instance; return state;  }, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
             });
-        } 
+        
 
     }
 
@@ -109,14 +112,9 @@ class StatusChecker extends Component {
         return(
             <div>
                 <div className="text-center">
-                    Time to next refresh: <Badge color="info">{this.props.globalTimer }s</Badge>
+                    <small>Time to next refresh:</small> <Badge color="info">{this.props.globalTimer }s</Badge>
                 </div>
                 <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
-                <Sound
-                    url="sounds/bike_horn.mp3"
-                    playStatus={Sound.status.STOPPED}
-                    ref={this.soundJingle}
-                />
                 
                 <Table responsive hover size="sm">
                     <thead>

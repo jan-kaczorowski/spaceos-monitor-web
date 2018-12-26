@@ -6,6 +6,7 @@ import { Badge } from 'reactstrap';
 import flame from '../../icons/flame.svg';
 import checked from '../../icons/checked.svg';
 import loading from '../../icons/loading.svg';
+import question from '../../icons/question.svg';
 
 class CommonInfoTableRowFragment extends React.Component {
     constructor(props) {
@@ -13,10 +14,16 @@ class CommonInfoTableRowFragment extends React.Component {
         this.state = {
             instance: this.props.instance
         }
+        this.typeColorMap = {
+            demo: 'secondary',
+            dev: 'secondary',
+            prod: 'primary',
+            feature: 'warning'
+        }
     }
 
     renderInstanceHealthIcon() {
-        if(this.state.instance.health) {
+        if(this.state.instance.coreHealth) {
             return (
                 <td>
                     <img src={checked} className="icon icon-checked" alt="icon-checked" />
@@ -27,6 +34,13 @@ class CommonInfoTableRowFragment extends React.Component {
             return (
                 <td>
                     <img src={flame} className="icon icon-flame" alt="icon-flame" />
+                </td>
+            )
+        }
+        else if(!this.state.instance.errors && !this.state.instance.coreHealth) {
+            return (
+                <td>
+                    <img src={question} className="icon icon-question" alt="icon-question" />
                 </td>
             )
         }
@@ -50,7 +64,7 @@ class CommonInfoTableRowFragment extends React.Component {
                     <a className="instance-link btn btn-outline-primary btn-block" href={instance.url} target="_blank" rel="noopener noreferrer">{instance.name}</a>      
                 </td>
                 <td>
-                    <Badge color="primary">{instance.type.toUpperCase()}</Badge>
+                    <Badge color={this.typeColorMap[instance.type]}>{instance.type.toUpperCase()}</Badge>
                 </td>
                 {this.renderInstanceHealthIcon()}
             </React.Fragment>

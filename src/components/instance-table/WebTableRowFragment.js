@@ -13,7 +13,7 @@ class WebTableRowFragment extends React.Component {
 
     hashToLink(instance) {
         const hash = instance.webHealth.commit_hash;
-        const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
+        const linkUrl = `https://github.com/SpaceOSLtd/web-wms/commit/${hash}`;
         if(hash) {
             return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>  
         } else {
@@ -30,32 +30,29 @@ class WebTableRowFragment extends React.Component {
         }
     }
 
-    commitMsg(instance) {
-        if(instance.webHealth){
-            return instance.webHealth.commit_subject || '(no commit message. Is jenkins job configured right?)'
-        } else {
-            return '(no commit data available)'
-        }
-    } 
-
     render() {
         const instance = this.state.instance
-        return (
-            <React.Fragment>
-                <td className="left-border">
-                    { instance.webHealth ? instance.webHealth.committer_name : ''  }
-                </td>
-                <td className="commit-msg">
-                    { this.commitMsg(instance)   }
-                </td>
-                <td>
-                    { instance.webHealth ? this.commitDate(instance) : ''  }
-                </td>
-                <td>
-                    { instance.webHealth ? this.hashToLink(instance) : ''  }
-                </td>
-            </React.Fragment>
+        if(instance.webHealth) {
+            return (
+                <React.Fragment>
+                    <td className="left-border">
+                        { instance.webHealth.committer_name }
+                    </td>
+                    <td className="commit-msg">
+                        { instance.webHealth.commit_subject  }
+                    </td>
+                    <td>
+                        { this.commitDate(instance) }
+                    </td>
+                    <td>
+                        { this.hashToLink(instance) }
+                    </td>
+                </React.Fragment>
+            )
+        } else return(
+            <td colSpan="4" className="commit-msg left-border">(No data available)</td>
         )
+
     }
 }
 
