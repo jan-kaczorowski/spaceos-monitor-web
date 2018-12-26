@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import InstanceTableRow from './InstanceTableRow'
+import InstanceTableRow from './instance-table/InstanceTableRow'
 import { Table } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
@@ -113,8 +113,8 @@ class StatusChecker extends Component {
                     <thead>
                         <tr>
                             <th colSpan="5">Common info</th>
-                            <th colSpan="3">Backend status</th>
-                            <th colSpan="3">Frontend status</th>
+                            <th colSpan="4">Backend status</th>
+                            <th colSpan="4">Frontend status</th>
                         </tr>
                         <tr>
                             <th>#</th>
@@ -122,11 +122,15 @@ class StatusChecker extends Component {
                             <th>Instance</th>
                             <th>Type</th>
                             <th>Health</th>
-                  
+
+                            {/* Backend: */}
+                            <th>Committer</th>
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>
               
+                            {/* Frontend: */}
+                            <th>Committer</th>
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>

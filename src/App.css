@@ -27,3 +27,8 @@
 ul.navbar-nav > li.nav-item > button {
   margin-right: 0.5em;
 }
+
+td.commit-msg {
+  font-size: 0.8em;
+  max-width: 10vw;
+}

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import flame from '../icons/flame.svg';
-import checked from '../icons/checked.svg';
-import loading from '../icons/loading.svg';
-import Moment from 'react-moment';
-import 'moment-timezone';
+import flame from '../../icons/flame.svg';
+import checked from '../../icons/checked.svg';
+import loading from '../../icons/loading.svg';
 import { Badge } from 'reactstrap';
+import 'moment-timezone';
+
+import WebTableRowFragment from './WebTableRowFragment'
+import CoreTableRowFragment from './CoreTableRowFragment'
+import CommonInfoTableRowFragment from './CommonInfoTableRowFragment'
+
 class InstanceTableRow extends Component {
 
     constructor(props) {
@@ -14,32 +18,7 @@ class InstanceTableRow extends Component {
             instance: this.props.instance
         }
     }
-    hashToLink(instance) {
-        const hash = instance.health.git_commit_data.commit_hash;
-        const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
-        if(hash) {
-            return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>  
-        } else {
-            return '';
-        }
-    }
 
-    commitDate(instance) {
-        const timestamp = instance.health.git_commit_data.timestamp
-        if(timestamp) {
-            return <Moment date={new Date(timestamp)} format="D MMM YYYY" />
-        } else {
-            return '';
-        }
-    }
-
-    commitMsg(instance) {
-        if(instance.health.git_commit_data){
-            return instance.health.git_commit_data.commit_subject || '(no commit message. Is jenkins job configured right?)'
-        } else {
-            return '(no commit data available)'
-        }
-    }
 
     buttonSection(instance) {
         return (
@@ -79,37 +58,14 @@ class InstanceTableRow extends Component {
         if(instance.health) {
             return(
                 <tr>
-                {this.commonInfoSection(instance, rowID)}
+                    
 
-                <td>
-                    <img src={checked} className="icon icon-checked" alt="icon-checked" />
-                </td>
+                <CommonInfoTableRowFragment instance={instance} rowID={rowID} />
     
-                {/* <td>
-                    { instance.health.git_commit_data ? instance.health.git_commit_data.committer_name : ''  }
-                </td> */}
-                
-                <td>
-                    { this.commitMsg(instance)   }
-                </td>
-    
-                <td>
-                    { instance.health.git_commit_data ? this.commitDate(instance) : ''  }
-                </td>
-    
-                <td>
-                    { instance.health.git_commit_data ? this.hashToLink(instance) : ''  }
-                </td>
-                
+                <CoreTableRowFragment instance={instance}/>
 
-                <td>Web comm. msg</td>
-                <td>Web comm. time</td>
-                <td>Web comm. hash</td>
-
-
-
-
-            </tr>
+                <WebTableRowFragment instance={instance}/>
+                </tr>
             )
         //errors
         } else if(instance.errors) {
@@ -136,7 +92,6 @@ class InstanceTableRow extends Component {
                 <td colSpan="4">
                     Gathering info...
                 </td>
-
             </tr>
         )
     }
