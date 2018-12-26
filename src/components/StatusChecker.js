@@ -4,6 +4,7 @@ import { Table, Progress, Badge } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import InstanceDetailsModal from './instance-table/InstanceDetailsModal'
+import Sound from 'react-sound';
 class StatusChecker extends Component {
     
     constructor(props) {
@@ -12,9 +13,10 @@ class StatusChecker extends Component {
         this.state = {
             instances: this.instanceFeed(props.instanceTypeFilter, props.instanceNameFilter)
         }
-
         this.updateInstancesHealthStatuses()
         this.timerId = setInterval(this.decreaseTimeout.bind(this), 1000);
+        this.soundJingle = React.createRef();
+        //this.audioFile = new Audio('sounds/bike_horn.mp3')
     }
 
     instanceFeed(instanceType, nameStr) {
@@ -34,11 +36,12 @@ class StatusChecker extends Component {
         }).sort((a, b) => a.client.localeCompare(b.client)) 
     }
 
-
     decreaseTimeout() {
         this.props.decrementGlobalTimer()
         
         if(this.props.globalTimer === 0) {
+            //this.soundJingle.current.props.playStatus = Sound.status.PLAYING
+
             this.updateInstancesHealthStatuses()
         } 
     }
@@ -109,6 +112,12 @@ class StatusChecker extends Component {
                     Time to next refresh: <Badge color="info">{this.props.globalTimer }s</Badge>
                 </div>
                 <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
+                <Sound
+                    url="sounds/bike_horn.mp3"
+                    playStatus={Sound.status.STOPPED}
+                    ref={this.soundJingle}
+                />
+                
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>

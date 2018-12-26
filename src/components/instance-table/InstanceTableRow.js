@@ -20,8 +20,6 @@ class InstanceTableRow extends Component {
         this.props.toggleInstanceModal(instance)
     }
 
-
-
     render() {
         const instance = this.state.instance
         const rowID = this.state.identifier+1

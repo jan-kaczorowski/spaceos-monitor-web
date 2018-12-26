@@ -40,3 +40,7 @@ th.left-border, td.left-border {
 ul.nav > li.internal-link.nav-item > a {
   margin-right: 0.5em;
 }
+
+.modal-dialog {
+  max-width: 70vw !important;
+}
