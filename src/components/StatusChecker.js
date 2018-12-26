@@ -109,8 +109,8 @@ class StatusChecker extends Component {
                     <thead>
                         <tr>
                             <th colSpan="5">Common info</th>
-                            <th colSpan="4">Backend status</th>
-                            <th colSpan="4">Frontend status</th>
+                            <th colSpan="4" className="left-border">Backend status</th>
+                            <th colSpan="4" className="left-border">Frontend status</th>
                         </tr>
                         <tr>
                             <th>#</th>
@@ -118,15 +118,11 @@ class StatusChecker extends Component {
                             <th>Instance</th>
                             <th>Type</th>
                             <th>Health</th>
-
-                            {/* Backend: */}
-                            <th>Committer</th>
+                            <th className="left-border">Committer</th>
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>
-              
-                            {/* Frontend: */}
-                            <th>Committer</th>
+                            <th className="left-border">Committer</th>
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>
@@ -134,7 +130,6 @@ class StatusChecker extends Component {
                     </thead>
                     <tbody>
                         {
-                            //.sort(function(a,b){return b.isProd-a.isProd})
                             this.state.instances
                                 .map(function(instance, i){
                                 return(

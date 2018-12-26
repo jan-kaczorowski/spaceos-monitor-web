@@ -42,7 +42,6 @@ class CommonInfoTableRowFragment extends React.Component {
 
     render() {
         const instance = this.state.instance
-        console.log(instance)
         return (
             <React.Fragment>
                 <td>{this.props.rowID}</td>

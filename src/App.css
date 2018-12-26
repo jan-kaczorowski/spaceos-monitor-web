@@ -32,3 +32,7 @@ td.commit-msg {
   font-size: 0.8em;
   max-width: 10vw;
 }
+
+th.left-border, td.left-border {
+  border-left: 1px #dee2e6 solid;
+}

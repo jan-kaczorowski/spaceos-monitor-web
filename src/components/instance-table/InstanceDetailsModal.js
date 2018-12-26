@@ -15,6 +15,19 @@ class InstanceDetailsModal extends React.Component {
     this.props.toggleInstanceModal(null)
   }
 
+  buttonSection(instance) {
+    return (
+        <React.Fragment>
+            <a className="instance-link btn btn-outline-primary btn-block disabled" href={instance.url} target="_blank" rel="noopener noreferrer">Goto Jenkins</a>  
+            <br/>
+            <a className="instance-link btn btn-outline-primary btn-block disabled" href={instance.url} target="_blank" rel="noopener noreferrer">Goto JIRA issue</a>  
+            <br/>
+            <a className="instance-link btn btn-primary btn-block" href={instance.url+'/api/v2/config'} target="_blank" rel="noopener noreferrer">Goto Config</a>  
+        </React.Fragment>
+    )
+}
+
+
   render() {
       
       if(this.props.instanceModalResource) {
@@ -22,17 +35,12 @@ class InstanceDetailsModal extends React.Component {
 
         return (
             <div>
-              {/* <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
               <Modal isOpen={this.props.instanceModalShow} className={this.props.className}>
-                <ModalHeader>{instance.name}</ModalHeader>
+                <ModalHeader toggle={this.close}>{instance.name}</ModalHeader>
                 <ModalBody>
-
-
-
-
+                    {this.buttonSection(instance)}
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={this.close}>Do Something</Button>{' '}
                   <Button color="secondary" onClick={this.close}>Cancel</Button>
                 </ModalFooter>
               </Modal>

@@ -44,18 +44,15 @@ class CoreTableRowFragment extends React.Component {
         if(instance.health) {
             return (
                 <React.Fragment>
-                    <td>
+                    <td className="left-border">
                         { instance.health.git_commit_data ? instance.health.git_commit_data.committer_name : ''  }
                     </td>
-                    
-                    <td class="commit-msg">
+                    <td className="commit-msg">
                         { this.commitMsg(instance)   }
                     </td>
-        
                     <td>
                         { instance.health.git_commit_data ? this.commitDate(instance) : ''  }
                     </td>
-        
                     <td>
                         { instance.health.git_commit_data ? this.hashToLink(instance) : ''  }
                     </td>

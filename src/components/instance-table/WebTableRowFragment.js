@@ -40,21 +40,17 @@ class WebTableRowFragment extends React.Component {
 
     render() {
         const instance = this.state.instance
-        console.log(instance)
         return (
             <React.Fragment>
-                <td>
+                <td className="left-border">
                     { instance.webHealth ? instance.webHealth.committer_name : ''  }
                 </td>
-                
-                <td class="commit-msg">
+                <td className="commit-msg">
                     { this.commitMsg(instance)   }
                 </td>
-    
                 <td>
                     { instance.webHealth ? this.commitDate(instance) : ''  }
                 </td>
-    
                 <td>
                     { instance.webHealth ? this.hashToLink(instance) : ''  }
                 </td>

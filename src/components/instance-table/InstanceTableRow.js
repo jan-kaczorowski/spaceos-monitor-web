@@ -20,21 +20,7 @@ class InstanceTableRow extends Component {
         this.props.toggleInstanceModal(instance)
     }
 
-    buttonSection(instance) {
-        return (
-            <React.Fragment>
-                <td>
-                    <a className="instance-link btn btn-outline-primary btn-block" href={instance.url} target="_blank" rel="noopener noreferrer">Goto Jenkins</a>  
-                </td>
-                <td>
-                    <a className="instance-link btn btn-outline-primary btn-block" href={instance.url} target="_blank" rel="noopener noreferrer">Goto JIRA issue</a>  
-                </td>
-                <td>
-                    <a className="instance-link btn btn-outline-primary btn-block" href={instance.url+'/api/v2/config'} target="_blank" rel="noopener noreferrer">Goto Config</a>  
-                </td>
-            </React.Fragment>
-        )
-    }
+
 
     render() {
         const instance = this.state.instance
@@ -42,9 +28,7 @@ class InstanceTableRow extends Component {
         return(
             <tr onClick={(e)=> this.rowClickHandler(e, instance)}>
                 <CommonInfoTableRowFragment instance={instance} rowID={rowID} />
-
                 <CoreTableRowFragment instance={instance}/>
-
                 <WebTableRowFragment instance={instance}/>
             </tr>
         )
