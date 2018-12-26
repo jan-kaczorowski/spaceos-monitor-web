@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InstanceTableRow from './instance-table/InstanceTableRow'
-import { Table } from 'reactstrap';
+import { Table, Progress, Badge } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import InstanceDetailsModal from './instance-table/InstanceDetailsModal'
@@ -105,6 +105,10 @@ class StatusChecker extends Component {
     render() {
         return(
             <div>
+                <div className="text-center">
+                    Time to next refresh: <Badge color="info">{this.props.globalTimer }s</Badge>
+                </div>
+                <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>

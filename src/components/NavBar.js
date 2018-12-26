@@ -8,13 +8,12 @@ import {
   NavItem,
   NavLink,
   Input,
-  Badge,
   Button,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem, 
-  Progress } from 'reactstrap';
+  DropdownItem} from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import { connect } from 'react-redux'
 
@@ -90,6 +89,14 @@ class NavBar extends React.Component {
           <NavbarBrand href="/">SpaceOS Instances</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav>
+                <NavItem className="internal-link">
+                    <Link to="/">Home</Link>
+                </NavItem>
+                <NavItem className="internal-link">
+                    <Link to="/about">About</Link>
+                </NavItem>
+            </Nav>
             <Nav className="ml-auto" navbar>
               <NavbarBrand>Filters:</NavbarBrand>
                 {this.renderButtonsForInstanceTypes()}
@@ -112,10 +119,6 @@ class NavBar extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <div className="text-center">
-            Time to next refresh: <Badge color="info">{this.props.globalTimer }s</Badge>
-        </div>
-        <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
       </div>
     );
   }
