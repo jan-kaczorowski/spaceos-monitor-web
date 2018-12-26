@@ -3,6 +3,7 @@ import InstanceTableRow from './instance-table/InstanceTableRow'
 import { Table } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
+import InstanceDetailsModal from './instance-table/InstanceDetailsModal'
 class StatusChecker extends Component {
     
     constructor(props) {
@@ -49,14 +50,12 @@ class StatusChecker extends Component {
 
     componentDidUpdate(prevProps) {
         const instanceListUpdatedCallback = () => {
-            console.log('instanceListUpdatedCallback')
             this.updateInstancesHealthStatuses()
         }
         //filtering criteria changed
         if ( (this.props.instanceTypeFilter !== prevProps.instanceTypeFilter) || 
             (this.props.instanceNameFilter !== prevProps.instanceNameFilter) ) {
 
-            console.log('filtering criteria changed')
             console.log('FILTERING BY TYPE: '+this.props.instanceNameFilter)
             console.log('FILTERING BY NAME: '+this.props.instanceTypeFilter)
 
@@ -65,6 +64,7 @@ class StatusChecker extends Component {
             return state; 
             }, instanceListUpdatedCallback)
         }
+
     }
 
     checkInstanceHealth(instance,i) {
@@ -80,10 +80,11 @@ class StatusChecker extends Component {
                 instance.errors = {"error": errors} ;
                 this.setState(state => { state.instances[i] = instance; return state;  })
             });
+
         const allowedUrls = ['https://feature1.spaceos.io','https://feature2.spaceos.io']          
         if(allowedUrls.includes(instance.url)) {
             const web_status_url = instance.url+'/commit_info.json'
-            console.info('AHAHAH', web_status_url)
+            console.info(web_status_url)
             fetch(web_status_url)
             .then(response => response.json())
             .then(data => {
@@ -96,13 +97,8 @@ class StatusChecker extends Component {
             .catch((errors)=> {
                 instance.webHealth = null;
                 sessionStorage.setItem(instance.url, JSON.stringify(errors))
-                //instance.webErrors = {"error": errors} ;
-                
-                //this.setState(state => { state.instances[i] = instance; return state;  })
             });
-        } else {
-            console.info('niet')
-        }
+        } 
 
     }
 
@@ -142,12 +138,16 @@ class StatusChecker extends Component {
                             this.state.instances
                                 .map(function(instance, i){
                                 return(
-                                    <InstanceTableRow identifier={i} key={instance.id} instance={instance}></InstanceTableRow>
+                                    <InstanceTableRow 
+                                        identifier={i} 
+                                        key={instance.id} 
+                                        instance={instance}/>
                                 )
                             })
                         }
                     </tbody>
                 </Table>
+                <InstanceDetailsModal />
             </div>
         );
     }

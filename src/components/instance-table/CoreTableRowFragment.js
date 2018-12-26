@@ -41,25 +41,28 @@ class CoreTableRowFragment extends React.Component {
 
     render() {
         const instance = this.state.instance
-        return (
-            <React.Fragment>
-                <td>
-                    { instance.health.git_commit_data ? instance.health.git_commit_data.committer_name : ''  }
-                </td>
-                
-                <td class="commit-msg">
-                    { this.commitMsg(instance)   }
-                </td>
-    
-                <td>
-                    { instance.health.git_commit_data ? this.commitDate(instance) : ''  }
-                </td>
-    
-                <td>
-                    { instance.health.git_commit_data ? this.hashToLink(instance) : ''  }
-                </td>
-            </React.Fragment>
-        )
+        if(instance.health) {
+            return (
+                <React.Fragment>
+                    <td>
+                        { instance.health.git_commit_data ? instance.health.git_commit_data.committer_name : ''  }
+                    </td>
+                    
+                    <td class="commit-msg">
+                        { this.commitMsg(instance)   }
+                    </td>
+        
+                    <td>
+                        { instance.health.git_commit_data ? this.commitDate(instance) : ''  }
+                    </td>
+        
+                    <td>
+                        { instance.health.git_commit_data ? this.hashToLink(instance) : ''  }
+                    </td>
+                </React.Fragment>
+            )
+        } else return('')
+
     }
 }
 
