@@ -18,15 +18,11 @@ class StatusChecker extends Component {
 
     instanceFeed(instanceType, nameStr) {
         let instance_data = this.instance_source_data
-
-        console.log('FILTERING BY TYPE: '+instanceType)
-        console.log('FILTERING BY NAME: '+nameStr)
         if(instanceType !== null) {
             instance_data = instance_data.filter( elem => elem.type === instanceType)
         }
         if(nameStr !== null) {
             instance_data = instance_data.filter( elem => {
-                console.log('elem',elem.client)
                 return elem.client.toLowerCase().includes(nameStr.toLowerCase()) ||
                     elem.name.toLowerCase().includes(nameStr.toLowerCase())
             } )
@@ -40,28 +36,35 @@ class StatusChecker extends Component {
 
     decreaseTimeout() {
         this.props.decrementGlobalTimer()
-        console.log('GLOBAL TIMER: '+this.props.globalTimer)
-        console.log('TYPE FILTER: '+this.props.instanceTypeFilter)
+        
         if(this.props.globalTimer === 0) {
             this.updateInstancesHealthStatuses()
         } 
     }
 
     updateInstancesHealthStatuses() {
+        console.log('updateInstancesHealthStatuses',this.state.instances.length)
         this.state.instances.map((instance, i) => this.checkInstanceHealth(instance, i) )
     }
 
     componentDidUpdate(prevProps) {
+        const instanceListUpdatedCallback = () => {
+            console.log('instanceListUpdatedCallback')
+            this.updateInstancesHealthStatuses()
+        }
+        //filtering criteria changed
         if ( (this.props.instanceTypeFilter !== prevProps.instanceTypeFilter) || 
             (this.props.instanceNameFilter !== prevProps.instanceNameFilter) ) {
-          console.info('props changed!')
-          //updating local state
-          this.setState((state, props) => {
+
+            console.log('filtering criteria changed')
+            console.log('FILTERING BY TYPE: '+this.props.instanceNameFilter)
+            console.log('FILTERING BY NAME: '+this.props.instanceTypeFilter)
+
+            this.setState((state, props) => {
             state.instances = this.instanceFeed(props.instanceTypeFilter, props.instanceNameFilter)
             return state; 
-          })
+            }, instanceListUpdatedCallback)
         }
-
     }
 
     checkInstanceHealth(instance,i) {
@@ -77,6 +80,30 @@ class StatusChecker extends Component {
                 instance.errors = {"error": errors} ;
                 this.setState(state => { state.instances[i] = instance; return state;  })
             });
+        const allowedUrls = ['https://feature1.spaceos.io','https://feature2.spaceos.io']          
+        if(allowedUrls.includes(instance.url)) {
+            const web_status_url = instance.url+'/commit_info.json'
+            console.info('AHAHAH', web_status_url)
+            fetch(web_status_url)
+            .then(response => response.json())
+            .then(data => {
+                instance.webHealth = data
+                instance.webErrors = null
+                console.log('webHealth', data)
+                sessionStorage.setItem(instance.url, JSON.stringify(data))
+                this.setState(state => {state.instances[i] = instance; return state;})
+            }) 
+            .catch((errors)=> {
+                instance.webHealth = null;
+                sessionStorage.setItem(instance.url, JSON.stringify(errors))
+                //instance.webErrors = {"error": errors} ;
+                
+                //this.setState(state => { state.instances[i] = instance; return state;  })
+            });
+        } else {
+            console.info('niet')
+        }
+
     }
 
     render() {

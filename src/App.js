@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import StatusChecker from './components/StatusChecker'
-import GeneralInfo from './components/GeneralInfo'
-import SideInfo from './components/SideInfo'
 import NavBar from './components/NavBar'
 import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux'

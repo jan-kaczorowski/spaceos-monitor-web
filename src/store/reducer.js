@@ -1,8 +1,8 @@
 
 const initialState = {
     globalTimer: 30,
-    initialInstanceTypeFilter: null,
-    initialInstanceNameFilter: null
+    initialInstanceTypeFilter: 'feature',
+    initialInstanceNameFilter: ''
 }
 
 const reducer = (state = initialState, action) => {
