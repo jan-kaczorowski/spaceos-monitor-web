@@ -1,76 +1,127 @@
 import React, { Component } from 'react';
-import InstanceTableRow from './InstanceTableRow'
-import { Table } from 'reactstrap';
+import InstanceTableRow from './instance-table/InstanceTableRow'
+import { Table, Progress, Badge } from 'reactstrap';
 import { connect } from 'react-redux'
+import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
+import InstanceDetailsModal from './instance-table/InstanceDetailsModal'
 class StatusChecker extends Component {
+    
     constructor(props) {
         super(props)
-
+        this.instance_source_data = require('../instances.json').instances
         this.state = {
-            instances: require('../instances.json')
-                            .instances.map((el, i) => {
-                                    el.errors = null
-                                    return el
-                                })
-                            .sort((a, b) => a.client.localeCompare(b.client))
+            instances: this.instanceFeed(props.instanceTypeFilter, props.instanceNameFilter)
         }
-
         this.updateInstancesHealthStatuses()
         this.timerId = setInterval(this.decreaseTimeout.bind(this), 1000);
+        this.audioFile = new Audio('sounds/bamboo.mp3')
+    }
+
+    instanceFeed(instanceType, nameStr) {
+        let instance_data = this.instance_source_data
+        if(instanceType !== null) {
+            instance_data = instance_data.filter( elem => elem.type === instanceType)
+        }
+        if(nameStr !== null) {
+            instance_data = instance_data.filter( elem => {
+                return elem.client.toLowerCase().includes(nameStr.toLowerCase()) ||
+                    elem.name.toLowerCase().includes(nameStr.toLowerCase())
+            } )
+        }
+        return instance_data.map((el, i) => {
+            el.errors = null
+            return el
+        }).sort((a, b) => a.client.localeCompare(b.client)) 
     }
 
     decreaseTimeout() {
         this.props.decrementGlobalTimer()
-        console.log('GLOBAL TIMER: '+this.props.globalTimer)
+        
         if(this.props.globalTimer === 0) {
+            this.audioFile.play()
             this.updateInstancesHealthStatuses()
         } 
     }
 
     updateInstancesHealthStatuses() {
+        console.log('updateInstancesHealthStatuses',this.state.instances.length)
         this.state.instances.map((instance, i) => this.checkInstanceHealth(instance, i) )
+    }
+
+    componentDidUpdate(prevProps) {
+        const instanceListUpdatedCallback = () => {
+            this.updateInstancesHealthStatuses()
+        }
+        //filtering criteria changed
+        if ( (this.props.instanceTypeFilter !== prevProps.instanceTypeFilter) || 
+            (this.props.instanceNameFilter !== prevProps.instanceNameFilter) ) {
+
+            console.log('FILTERING BY TYPE: '+this.props.instanceNameFilter)
+            console.log('FILTERING BY NAME: '+this.props.instanceTypeFilter)
+
+            this.setState((state, props) => {
+            state.instances = this.instanceFeed(props.instanceTypeFilter, props.instanceNameFilter)
+            return state; 
+            }, instanceListUpdatedCallback)
+        }
+
     }
 
     checkInstanceHealth(instance,i) {
         fetch(instance.url+'/status')
             .then(response => response.json())
             .then(data => {
-                instance.health = data;
+                instance.coreHealth = data.git_commit_data;
                 instance.errors = null ;
-                this.setState(state => { state.instances[i] = instance; return state;  })
+                this.setState(state => { state.instances[i] = instance; return state;  }, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
+                
             })
             .catch((errors)=> {
-                instance.health = null;
-                instance.errors = {"error": errors} ;
-                this.setState(state => { state.instances[i] = instance; return state;  })
+                instance.coreHealth = null;
+                instance.coreErrors = {"error": errors} ;
+
+                this.setState(state => { state.instances[i] = instance; return state;  }, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
             });
-        if(instance.url === 'https://dev.spaceos.io') {
-            fetch(instance.url+'/commit_info.txt')
+
+        fetch(instance.url+'/commit_info.json')
+            .then(response => response.json())
             .then(data => {
-                console.log('COMMIT INFO RETURN:',data);
-                // instance.health = data;
-                // instance.errors = null ;
-                // this.setState(state => { state.instances[i] = instance; return state;  })
-            })
+                instance.webHealth = data
+                instance.webErrors = null
+
+                this.setState(state => {state.instances[i] = instance; return state;}, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
+            }) 
             .catch((errors)=> {
-                console.info('err')
-                // instance.health = null;
-                // instance.errors = {"error": errors} ;
-                // this.setState(state => { state.instances[i] = instance; return state;  })
+                instance.webHealth = null;
+                instance.webErrors = {"error": errors} ;
+                this.setState(state => { state.instances[i] = instance; return state;  }, () => {
+                    localStorage.setItem(instance.url, JSON.stringify(instance))
+                })
             });
-        }
+        
 
     }
 
     render() {
         return(
             <div>
+                <div className="text-center">
+                    <small>Time to next refresh:</small> <Badge color="info">{this.props.globalTimer }s</Badge>
+                </div>
+                <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
+                
                 <Table responsive hover size="sm">
                     <thead>
                         <tr>
                             <th colSpan="5">Common info</th>
-                            <th colSpan="4">Code status info</th>
-                            <th colSpan="3"></th>
+                            <th colSpan="4" className="left-border">Backend status</th>
+                            <th colSpan="4" className="left-border">Frontend status</th>
                         </tr>
                         <tr>
                             <th>#</th>
@@ -78,40 +129,34 @@ class StatusChecker extends Component {
                             <th>Instance</th>
                             <th>Type</th>
                             <th>Health</th>
-                            <th>Commiter</th>
+                            <th className="left-border">Committer</th>
                             <th>Commit Msg</th>
                             <th>Commit Time</th>
                             <th>Commit hash</th>
-                            <th colSpan="3"></th>
+                            <th className="left-border">Committer</th>
+                            <th>Commit Msg</th>
+                            <th>Commit Time</th>
+                            <th>Commit hash</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            //.sort(function(a,b){return b.isProd-a.isProd})
                             this.state.instances
-                                .map(function(instance,i){
+                                .map(function(instance, i){
                                 return(
-                                    <InstanceTableRow identifier={i} instance={instance}></InstanceTableRow>
+                                    <InstanceTableRow 
+                                        identifier={i} 
+                                        key={instance.id} 
+                                        instance={instance}/>
                                 )
                             })
                         }
                     </tbody>
                 </Table>
+                <InstanceDetailsModal />
             </div>
         );
     }
 }
 
-
-const mapStateToProps = (state) => {
-    return {
-      globalTimer: state.globalTimer
-    }
-  }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        decrementGlobalTimer: ()=> dispatch({type: 'DECREMENT_GLOBAL_TIMER'})
-    }
-}
-  
 export default connect(mapStateToProps, mapDispatchToProps)(StatusChecker)

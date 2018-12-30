@@ -24,3 +24,23 @@
 .jumbotron {
   padding: 2rem 2rem !important;
 }
+ul.navbar-nav > li.nav-item > button {
+  margin-right: 0.5em;
+}
+
+td.commit-msg {
+  font-size: 0.8em;
+  max-width: 10vw;
+}
+
+th.left-border, td.left-border {
+  border-left: 1px #dee2e6 solid;
+}
+
+ul.nav > li.internal-link.nav-item > a {
+  margin-right: 0.5em;
+}
+
+.modal-dialog {
+  max-width: 70vw !important;
+}

@@ -1,29 +1,56 @@
 import React, { Component } from 'react';
-import { Jumbotron } from 'reactstrap';
+import { Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
 import { connect } from 'react-redux'
+import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 class SideInfo extends Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {counter: props.counter}
-    // }
-    render() {
-        return(
-          <Jumbotron>
-                <h2 >Time to refresh data: {this.props.globalTimer }s</h2>
-          </Jumbotron>
-        )
-    }
-}
+  constructor(props) {
+    super(props)
+    this.toggle = this.toggle.bind(this)
+    this.state = { dropdownOpen: false}
+  }
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    })
+  }
 
-const mapStateToProps = (state) => {
-    return {
-      globalTimer: state.globalTimer
+  activeInstanceTypeFilter() {
+    if(this.props.instanceTypeFilter === null) {
+      return 'All types'
+    } else {
+      return this.props.instanceTypeFilter
     }
   }
-  const mapDispatchToProps = (dispatch) => {
-    return {
-        decrementGlobalTimer: ()=> dispatch({type: 'DECREMENT_GLOBAL_TIMER'})
-    }
+
+  handleChangeNameFilter = (e) => {
+    this.props.setInstanceNameFilter(e.target.value)
   }
   
-  export default connect(mapStateToProps, mapDispatchToProps)(SideInfo);
+  render(){
+    return(
+      <Jumbotron>
+            <h2 >Time to refresh data: {this.props.globalTimer }s</h2>
+            <div>
+              <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                <DropdownToggle caret>
+                {this.activeInstanceTypeFilter()}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('dev')} >DEV</DropdownItem>
+                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('prod')} >PROD</DropdownItem>
+                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('demo')} >DEMO</DropdownItem>
+                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter('feature')} >FEATURE</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={() => this.props.setInstanceTypeFilter(null)}>All types</DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+              <Input addon type="text" 
+                     value={this.props.instanceNameFilter} 
+                     onChange={evt => this.handleChangeNameFilter(evt)}  />
+            </div>
+      </Jumbotron>
+    )
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideInfo);
