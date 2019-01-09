@@ -255,6 +255,22 @@
             "isProd": false,
             "client": "---",
             "type": "demo"
-        }                                                  
+        },
+        {
+            "id": 33,
+            "url": "https://stg-siliconallee.spaceos.io",
+            "name": "Silicon Allee STG",
+            "isProd": false,
+            "client": "Silicon Allee",
+            "type": "dev"
+        }, 
+        {
+            "id": 34,
+            "url": "https://siliconallee.spaceos.io",
+            "name": "Silicon Allee PROD",
+            "isProd": true,
+            "client": "Silicon Allee",
+            "type": "prod"
+        }                                                             
     ]
 }
