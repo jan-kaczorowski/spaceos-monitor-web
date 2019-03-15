@@ -12,7 +12,7 @@ class CoreTableRowFragment extends React.Component {
     }
 
     hashToLink(instance) {
-        const hash = instance.coreHealth.commit_hash;
+        const hash = instance.backend_status_body.body.git_commit_data.commit_hash;
         const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
         if(hash) {
             return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>  
@@ -22,7 +22,7 @@ class CoreTableRowFragment extends React.Component {
     }
 
     commitDate(instance) {
-        const timestamp = instance.coreHealth.timestamp
+        const timestamp = instance.backend_status_body.body.git_commit_data.commit_timestamp
         if(timestamp) {
             return <Moment date={new Date(timestamp)} format="D MMM YYYY" />
         } else {
@@ -37,14 +37,14 @@ class CoreTableRowFragment extends React.Component {
 
     render() {
         const instance = this.state.instance
-        if(instance.coreHealth) {
+        if(instance.backend_status_body.state === 'ok') {
             return (
                 <React.Fragment>
                     <td className="left-border">
-                        { instance.coreHealth.committer_name }
+                        { instance.backend_status_body.body.git_commit_data.committer_name }
                     </td>
                     <td className="commit-msg">
-                        { instance.coreHealth.commit_subject   }
+                        { instance.backend_status_body.body.git_commit_data.commit_subject   }
                     </td>
                     <td>
                         { this.commitDate(instance) }

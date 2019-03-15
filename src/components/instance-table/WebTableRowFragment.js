@@ -12,7 +12,7 @@ class WebTableRowFragment extends React.Component {
     }
 
     hashToLink(instance) {
-        const hash = instance.webHealth.commit_hash;
+        const hash = instance.web_status_body.body.commit_hash;
         const linkUrl = `https://github.com/SpaceOSLtd/web-wms/commit/${hash}`;
         if(hash) {
             return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>  
@@ -22,7 +22,7 @@ class WebTableRowFragment extends React.Component {
     }
 
     commitDate(instance) {
-        const timestamp = instance.webHealth.timestamp
+        const timestamp = instance.web_status_body.body.timestamp
         if(timestamp) {
             return <Moment date={new Date(timestamp)} format="D MMM YYYY" />
         } else {
@@ -32,14 +32,14 @@ class WebTableRowFragment extends React.Component {
 
     render() {
         const instance = this.state.instance
-        if(instance.webHealth) {
+        if(instance.web_status_body.state === 'ok') {
             return (
                 <React.Fragment>
                     <td className="left-border">
-                        { instance.webHealth.committer_name }
+                        { instance.web_status_body.body.committer_name }
                     </td>
                     <td className="commit-msg">
-                        { instance.webHealth.commit_subject  }
+                        { instance.web_status_body.body.commit_subject  }
                     </td>
                     <td>
                         { this.commitDate(instance) }

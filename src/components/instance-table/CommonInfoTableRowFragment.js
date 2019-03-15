@@ -23,7 +23,7 @@ class CommonInfoTableRowFragment extends React.Component {
     }
 
     renderInstanceHealthIcon() {
-        if(this.state.instance.coreHealth) {
+        if(this.state.instance.backend_status_body) {
             return (
                 <td>
                     <img src={checked} className="icon icon-checked" alt="icon-checked" />
@@ -61,7 +61,7 @@ class CommonInfoTableRowFragment extends React.Component {
                 <td>{this.props.rowID}</td>
                 <td>{instance.client}</td>
                 <td>
-                    <a className="instance-link btn btn-outline-primary btn-block" href={instance.url} target="_blank" rel="noopener noreferrer">{instance.name}</a>      
+                    <strong className='instance-name'>{instance.name}</strong>      
                 </td>
                 <td>
                     <Badge color={this.typeColorMap[instance.type]}>{instance.type.toUpperCase()}</Badge>
