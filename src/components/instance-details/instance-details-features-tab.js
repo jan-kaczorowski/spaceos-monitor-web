@@ -19,15 +19,19 @@ import {
     DropdownMenu,
     DropdownItem} from 'reactstrap';
       
-class InstanceDetailsBackendTab extends React.Component {
+
+
+// Features
+
+class InstanceDetailsFeaturesTab extends React.Component {
 
   render() {
     return (
         <div>
-            <h1>Modal part backend</h1>
+            <h1>Modal part Features</h1>
         </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InstanceDetailsBackendTab)
+export default connect(mapStateToProps, mapDispatchToProps)(InstanceDetailsFeaturesTab)

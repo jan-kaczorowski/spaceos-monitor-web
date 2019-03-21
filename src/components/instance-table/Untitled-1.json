@@ -1,0 +1,52 @@
+{
+    "backend_status_body":{  
+        "body":{  
+           "database_ok?":true,
+           "git_commit_data":{  
+              "branch_name":"stg",
+              "build_number":"84",
+              "build_timestamp":"2019-03-06T10:06:43:+0100",
+              "commit_hash":"a8649d8",
+              "commit_subject":"Merge branch 'dev' into stg",
+              "commit_timestamp":"2019-03-05T22:56:21+01:00",
+              "committer_name":"Jan Kaczorowski",
+              "git_tag_message":"",
+              "git_tag_name":"",
+              "job_slug":"wms_core_build-stg"
+           },
+           "migrations_ok?":true,
+           "overall_ok?":true,
+           "version_backend":"spbackend-0.0.1",
+           "version_web":"spweb-0.0.1",
+           "workers_ok?":true
+        },
+        "state":"ok"
+     },
+     "backend_status_http_code":200,
+     "genre":"Non-PROD",
+     "hosting_provider":"Hetzner",
+     "id":16,
+     "name":"STG SOSA TLV",
+     "notes":null,
+     "real_ip":"148.251.40.167",
+     "slug":null,
+     "status":null,
+     "type":"staging",
+     "url":"https://stg-sosa-tlv.spaceos.io",
+     "web_status_body":{  
+        "body":{  
+           "branch_name":"stg",
+           "build_number":"333",
+           "build_timestamp":"2019-03-07T18:01:14:+0100",
+           "commit_hash":"7bdbaa2",
+           "commit_subject":"spos-1434 add theme for wavespace (#704)",
+           "commit_timestamp":"2019-03-07T16:05:16+01:00",
+           "committer_name":"grzegorz-jazurek",
+           "git_tag_message":"",
+           "git_tag_name":"",
+           "job_slug":"wms_web_build-stg"
+        },
+        "state":"ok"
+     },
+     "web_status_http_code":200
+}

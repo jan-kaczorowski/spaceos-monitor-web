@@ -23,24 +23,28 @@ import {
     Route,
   } from 'react-router-dom';
   
-  import InstanceDetailsBackendTab from './instance-details-backend-tab';
+  import InstanceDetailsFeaturesTab from './instance-details-features-tab';
   import InstanceDetailsFrontendTab from './instance-details-frontend-tab'
   import InstanceDetailsClientTab from './instance-details-client-tab'
   import InstanceDetailsMetricTab from './instance-details-metric-tab'
-  
+  import InstanceDetailsConfigTab from './instance-details-metric-tab'
+  import InstanceDetailsInformationTab from './instance-details-information-tab'
+    
 
   
   class InstanceDetailsModal extends React.Component {
     constructor(props) {
       super(props);
       this.close = this.close.bind(this);
-      this.state = { activeTab: 'backend'}
+      this.state = { activeTab: 'metric'}
       this.changeActiveTab.bind(this)
       this.tabs = {
-        backend: InstanceDetailsBackendTab,
+        features: InstanceDetailsFeaturesTab,
         frontend: InstanceDetailsFrontendTab,
         client: InstanceDetailsClientTab,
-        metric: InstanceDetailsMetricTab
+        metric: InstanceDetailsMetricTab,
+        config: InstanceDetailsConfigTab,
+        information: InstanceDetailsInformationTab 
       }
     }
     
@@ -49,40 +53,37 @@ import {
     }
     
     changeActiveTab(caption) {
-      //let newState = {...this.state}
-      //newState.activeTab = caption
-      this.setState({activeTab: caption})
+      let newState = {...this.state}
+      newState.activeTab = caption
+      //this.setState({activeTab: caption})
+      this.setState(newState)
       
+    }
+
+    getCaption() {
+      return this.state.activeTab.charAt(0).toUpperCase() + this.state.activeTab.slice(1)
     }
     
     showTabContent() {
-      //const activeTabComponent = 
       const ActiveTabComponent = this.tabs[this.state.activeTab]
-      //console.log(activeTabComponent) 
       return <ActiveTabComponent instance={this.props.instanceModalResource}  /> 
-      
-      //return React.createElement(ActiveTabComponent, {});
-
     }
     
     buttonSection(instance) {
+      let buttonsCollection = Object.keys(this.tabs).map((key) => {
+        const caption = key.charAt(0).toUpperCase() + key.slice(1)
+        return(
+          <NavItem>
+          <NavLink onClick={() => this.changeActiveTab(key)}>{caption}</NavLink>
+          </NavItem>
+        )
+      })
       return (
         <React.Fragment>
           <Row>
             <Col>
               <Nav tabs>
-                <NavItem>
-                  <NavLink onClick={() => this.changeActiveTab('frontend')}>Frontend</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={() => this.changeActiveTab('backend')}>Backend</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={() => this.changeActiveTab('client')}>Client</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={() => this.changeActiveTab('metric')}>Metric</NavLink>
-                </NavItem>
+                {buttonsCollection}
               </Nav>
             </Col>
           </Row>
@@ -90,25 +91,29 @@ import {
         )
       }
       
-      
       render() {
-        
         if(this.props.instanceModalResource) {
           const instance = this.props.instanceModalResource
           
           return (
             <div>
-            <Modal isOpen={this.props.instanceModalShow} className={this.props.className}>
-            <ModalHeader toggle={this.close}>{instance.name}</ModalHeader>
-            <ModalBody>
-              {this.buttonSection(instance)}
-          
-              {this.showTabContent()}
-            </ModalBody>
-            <ModalFooter>
-            <Button color="secondary" onClick={this.close}>Cancel</Button>
-            </ModalFooter>
-            </Modal>
+              <Modal isOpen={this.props.instanceModalShow} className={this.props.className}>
+                <ModalHeader toggle={this.close}>{instance.name}</ModalHeader>
+                <ModalBody>
+                  {this.buttonSection(instance)}
+
+                  <Row>
+                    <Col>
+                      <h2>{this.getCaption()}</h2>
+                    </Col>
+                  </Row>
+              
+                  {this.showTabContent()}
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.close}>Cancel</Button>
+                </ModalFooter>
+              </Modal>
             </div>
             );
           } else return('')

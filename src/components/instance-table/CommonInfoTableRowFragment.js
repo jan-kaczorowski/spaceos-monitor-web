@@ -59,7 +59,7 @@ class CommonInfoTableRowFragment extends React.Component {
         return (
             <React.Fragment>
                 <td>{this.props.rowID}</td>
-                <td>{instance.client}</td>
+                <td>{instance.client.name}</td>
                 <td>
                     <strong className='instance-name'>{instance.name}</strong>      
                 </td>

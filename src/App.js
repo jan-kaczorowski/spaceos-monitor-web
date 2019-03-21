@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import StatusChecker from './components/StatusChecker'
 import NavBar from './components/NavBar'
 import AboutPage from './components/AboutPage'
+import ClientsList from './components/clients-management/ClientsList'
 import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 
@@ -25,6 +23,7 @@ class App extends Component {
           <Col>
                 <Route exact path="/" component={StatusChecker} />
                 <Route path="/about" component={AboutPage} />                   
+                <Route path="/clients/list" component={ClientsList} />                   
           </Col>
         </Row>
       </Container>

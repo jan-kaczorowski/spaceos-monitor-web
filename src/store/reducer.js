@@ -1,7 +1,8 @@
+import ApiService from '../services/api-service'
 
 const initialState = {
     globalTimer: 30,
-    initialInstanceTypeFilter: 'feature',
+    initialInstanceTypeFilter: null,
     initialInstanceNameFilter: ''
 }
 
@@ -31,12 +32,24 @@ const reducer = (state = initialState, action) => {
             }
             break;
         }
+        case 'REFRESH_CLIENT_LIST': {
+            newState.clients = action.data  
+            break;
+        }
+            
+        case 'REFRESH_INSTANCES_LIST': {
+            newState.instances = action.data
+            break;
+        }
+
         default: {
             newState.globalTimer = initialState.globalTimer;
             newState.instanceNameFilter = initialState.initialInstanceNameFilter;
             newState.instanceTypeFilter = initialState.initialInstanceTypeFilter;
             newState.instanceModalResource = null
             newState.instanceModalShow = false
+            newState.clients = []
+            newState.instances = []
             break;
         }
     }

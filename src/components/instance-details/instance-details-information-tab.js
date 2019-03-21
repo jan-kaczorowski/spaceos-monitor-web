@@ -20,14 +20,13 @@ import {
     DropdownMenu, Form, FormGroup, Label,
     DropdownItem} from 'reactstrap';
     
-class InstanceDetailsMetricTab extends React.Component {
+class InstanceDetailsInformationTab extends React.Component {
 
   constructor(props) {
     super(props);
     this.instance = props.instanceModalResource
-    this.title = 'Metric'
   }
-
+// Locations -> information
   showWebGroup() {
     if(this.instance && (this.instance.backend_status_body.state === 'ok') ) {
       return (
@@ -161,22 +160,11 @@ class InstanceDetailsMetricTab extends React.Component {
 
         return (
             <div>
-              <Row>
-                <Col>
-                  <h2>{this.title}</h2>
-                </Col>
-              </Row>
-              <Row>
-                  {this.showWebGroup()}
-
-                  {this.showBackendGroup()}
-                
-                  {this.showButtons()}
-              </Row>
+              <pre>Information</pre> 
             </div>
           );
       } else return('')
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InstanceDetailsMetricTab)
+export default connect(mapStateToProps, mapDispatchToProps)(InstanceDetailsInformationTab)

@@ -17,34 +17,28 @@ import { Link } from 'react-router-dom';
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import { connect } from 'react-redux'
 import { GoogleLogin } from 'react-google-login';
+import ApiService from '../services/api-service'
 //import { GoogleAPI, GoogleLogin } from 'react-google-oauth';
 
 class NavBar extends React.Component {
+
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+    this.apiService = ApiService
     this.state = {
       isOpen: false,
       instanceTypes: [
-        {caption: 'Production', slug: 'prod'},
-        {caption: 'Developer', slug: 'dev'},
+        {caption: 'Production', slug: 'production'},
+        {caption: 'Developer', slug: 'staging'},
         {caption: 'Demo', slug: 'demo'},
         {caption: 'Feature', slug: 'feature'},
         {caption: 'All', slug: null}
-      ],
-      clients: [
-          "SOSA",
-          "MixerWork",
-          "Tower42",
-          "Creative Union",
-          "NewLab",
-          "Bauwens Digital",
-          "BusinessLink",
-          "The Heart",
-          "Central Working"
       ]
     };
+    this.props.refreshClients()
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -81,9 +75,9 @@ class NavBar extends React.Component {
   }
 
   renderDropdownsForClients() {
-      return this.state.clients.map( elem => {
+      return this.props.clients.map( elem => {
           return (
-            <DropdownItem key={elem} onClick={() => this.props.setInstanceNameFilter(elem)} >{elem}</DropdownItem>
+            <DropdownItem key={elem.id} onClick={() => this.props.setInstanceNameFilter(elem.name)} >{elem.name}</DropdownItem>
           )
       })
 
@@ -114,6 +108,9 @@ class NavBar extends React.Component {
                 </NavItem>
                 <NavItem className="internal-link">
                     <Link to="/about">About</Link>
+                </NavItem>
+                <NavItem className="internal-link">
+                    <Link to="/clients/list">Clients List</Link>
                 </NavItem>
             </Nav>
             <Nav className="ml-auto" navbar>
