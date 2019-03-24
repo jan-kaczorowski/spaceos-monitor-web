@@ -6,7 +6,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   Input,
   Button,
   UncontrolledDropdown,
@@ -46,7 +45,6 @@ class NavBar extends React.Component {
   }
 
   responseGoogle(arg) {
-    //let scope="email+profile+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile"
     let scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
     console.info(JSON.stringify(arg))
     fetch(
@@ -60,7 +58,6 @@ class NavBar extends React.Component {
 
   loginSuccess(arg) { alert("LOGIN SUCCESS "+JSON.stringify(arg)) }
   loginFailure(arg) { alert("LOGIN FAILURE "+JSON.stringify(arg)) }
-  printShit(arg) { alert("SHIT: "+JSON.stringify(arg)) }
 
   renderButtonsForInstanceTypes() {
     return this.state.instanceTypes.map((elem) => {
@@ -75,12 +72,11 @@ class NavBar extends React.Component {
   }
 
   renderDropdownsForClients() {
-      return this.props.clients.map( elem => {
-          return (
-            <DropdownItem key={elem.id} onClick={() => this.props.setInstanceNameFilter(elem.name)} >{elem.name}</DropdownItem>
-          )
-      })
-
+    return this.props.clients.map( elem => {
+        return (
+          <DropdownItem key={elem.id} onClick={() => this.props.setInstanceNameFilter(elem.name)} >{elem.name}</DropdownItem>
+        )
+    })
   }
 
   activeInstanceTypeFilter() {
@@ -93,6 +89,37 @@ class NavBar extends React.Component {
 
   handleChangeNameFilter = (e) => {
     this.props.setInstanceNameFilter(e.target.value)
+  }
+
+  instancesListMenu() {
+    return (
+      <Nav className="ml-auto" navbar>
+        <NavbarBrand>Filters:</NavbarBrand>
+          {this.renderButtonsForInstanceTypes()}
+        <NavItem>
+          <Input addon type="text"
+              placeholder="Seach instances.." 
+              value={this.props.instanceNameFilter} 
+              onChange={evt => this.handleChangeNameFilter(evt)}/>
+        </NavItem>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret>
+              Clients
+          </DropdownToggle>
+          <DropdownMenu right>
+            {this.renderDropdownsForClients()}
+            <DropdownItem divider />
+            <DropdownItem onClick={() => this.props.setInstanceNameFilter('')}>Clear name filter</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </Nav>
+    )
+  }
+
+  secondaryMenu() {
+    if(window.location.pathname === '/') {
+        return this.instancesListMenu()
+    } else return ''
   }
 
   render() {
@@ -113,26 +140,9 @@ class NavBar extends React.Component {
                     <Link to="/clients/list">Clients List</Link>
                 </NavItem>
             </Nav>
-            <Nav className="ml-auto" navbar>
-              <NavbarBrand>Filters:</NavbarBrand>
-                {this.renderButtonsForInstanceTypes()}
-              <NavItem>
-                <Input addon type="text"
-                     placeholder="Seach instances.." 
-                     value={this.props.instanceNameFilter} 
-                     onChange={evt => this.handleChangeNameFilter(evt)}/>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                    Clients
-                </DropdownToggle>
-                <DropdownMenu right>
-                  {this.renderDropdownsForClients()}
-                  <DropdownItem divider />
-                  <DropdownItem onClick={() => this.props.setInstanceNameFilter('')}>Clear name filter</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
+
+            {this.secondaryMenu()}
+
           </Collapse>
 
           <GoogleLogin
@@ -146,7 +156,6 @@ class NavBar extends React.Component {
                 onSuccess={this.responseGoogle}
                 onFailure={this.responseGoogle}
               />
-
         </Navbar>
       </div>
     );

@@ -7,6 +7,8 @@ const mapStateToProps = (state) => {
       instanceNameFilter: state.instanceNameFilter,
       instanceModalShow: state.instanceModalShow,
       instanceModalResource: state.instanceModalResource,
+      clientModalShow: state.clientModalShow,
+      clientModalResource: state.clientModalResource,      
       clients: state.clients,
       instances: state.instances
     }
@@ -34,11 +36,18 @@ const mapDispatchToProps = (dispatch) => {
 
         setInstanceNameFilter: (str) => dispatch({type: 'APPLY_INSTANCE_NAME_FILTER', instanceNameFilter: str }),
         setInstanceTypeFilter: (instType) => dispatch({type: 'APPLY_INSTANCE_TYPE_FILTER', instanceTypeFilter: instType }),
+
         toggleInstanceModal: (instance, modalVisibility) => dispatch({
             type: 'TOGGLE_INSTANCE_MODAL', 
             instance: instance,
             modalVisibility: modalVisibility
-        }) 
+        }), 
+
+        toggleClientModal: (client, modalVisibility) => dispatch({
+            type: 'TOGGLE_CLIENT_MODAL', 
+            client: client,
+            modalVisibility: modalVisibility
+        })
     }
 }
 

@@ -32,6 +32,15 @@ const reducer = (state = initialState, action) => {
             }
             break;
         }
+        case 'TOGGLE_CLIENT_MODAL': {
+            newState.clientModalResource = action.client;
+            if(action.modalVisibility === undefined) {
+                newState.clientModalShow = !newState.clientModalShow
+            } else {
+                newState.clientModalShow = action.modalVisibility;
+            }
+            break;
+        }
         case 'REFRESH_CLIENT_LIST': {
             newState.clients = action.data  
             break;
@@ -46,8 +55,11 @@ const reducer = (state = initialState, action) => {
             newState.globalTimer = initialState.globalTimer;
             newState.instanceNameFilter = initialState.initialInstanceNameFilter;
             newState.instanceTypeFilter = initialState.initialInstanceTypeFilter;
+
             newState.instanceModalResource = null
             newState.instanceModalShow = false
+            newState.clientModalResource = null
+            newState.clientModalShow = false
             newState.clients = []
             newState.instances = []
             break;
