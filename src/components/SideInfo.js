@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Jumbotron, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
+import AuthService from '../../services/auth-service'
 class SideInfo extends Component {
   constructor(props) {
     super(props)
@@ -27,6 +29,9 @@ class SideInfo extends Component {
   }
   
   render(){
+    if(!AuthService.isLoggedIn()) {
+      return(<Redirect path="/login"/>)
+    }
     return(
       <Jumbotron>
             <h2 >Time to refresh data: {this.props.globalTimer }s</h2>

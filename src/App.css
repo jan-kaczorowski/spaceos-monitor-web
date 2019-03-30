@@ -44,3 +44,65 @@ ul.nav > li.internal-link.nav-item > a {
 .modal-dialog {
   max-width: 70vw !important;
 }
+
+.col-std {
+  max-width: 33%;
+}
+.google-login-button { 
+  width: 100%;
+  border-radius: 0.3rem !important;
+  height: 50px !important;
+  font-size: 18px !important;
+}
+
+.descr-jumbotron { padding-top: 20px;}
+
+.new-instance-button {
+  margin: 20px 0 20px;
+}
+.login-form-container {
+  padding: 20vh 0 0 5vh;
+}
+.login-form {
+  max-width: 600px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.app-title { 
+  padding: 20px 0;
+  color: white;
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  position: absolute; 
+  z-index: -100;
+  background: linear-gradient(178deg, #8807f2, #851dd9);
+  background-size: 400% 400%;
+
+  -webkit-animation: AnimationName 12s ease infinite;
+  -moz-animation: AnimationName 12s ease infinite;
+  animation: AnimationName 12s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0%{background-position:51% 0%}
+  50%{background-position:50% 100%}
+  100%{background-position:51% 0%}
+}
+@-moz-keyframes AnimationName {
+  0%{background-position:51% 0%}
+  50%{background-position:50% 100%}
+  100%{background-position:51% 0%}
+}
+@keyframes AnimationName { 
+  0%{background-position:51% 0%}
+  50%{background-position:50% 100%}
+  100%{background-position:51% 0%}
+}
+
+input:disabled {
+  background-color: #CCC;
+}

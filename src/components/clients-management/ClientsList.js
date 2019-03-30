@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../../store/reducer_interface'
-import { Row, Col, Table, Button, Nav, NavItem, NavLink } from 'reactstrap';
+import { Row, Col, Table, Button, Nav, NavItem } from 'reactstrap';
+import NavBar from '../NavBar'
 import ApiService from '../../services/api-service'
 import ClientDetailsModal from './ClientDetailsModal'
 
@@ -25,6 +26,14 @@ class ClientsList extends React.Component {
 
     render() {
         return (
+          <div>
+            <Row>
+              <Col>
+                  <NavBar/>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
           <div>
             <Row>
               <Col>
@@ -72,6 +81,9 @@ class ClientsList extends React.Component {
              <ClientDetailsModal />
             </Row>
           </div>
+          </Col>
+            </Row>
+        </div>
         );
     }
 }

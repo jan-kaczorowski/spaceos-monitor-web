@@ -3,22 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../../store/reducer_interface'
-import {
-    Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem,
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    Input,
-    Card, CardImg, CardText, CardBody, CardHeader,
-    CardTitle, CardSubtitle,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu, Form, FormGroup, Label,
-    DropdownItem} from 'reactstrap';
+import { Row, Col, Button, Input, Card,CardBody, CardHeader, Form, FormGroup, Label} from 'reactstrap';
     
 class InstanceDetailsMetricTab extends React.Component {
 
@@ -31,7 +16,7 @@ class InstanceDetailsMetricTab extends React.Component {
   showWebGroup() {
     if(this.instance && (this.instance.backend_status_body.state === 'ok') ) {
       return (
-        <Col>
+        <Col className='col-std'>
           <Card>
             <CardHeader tag="h3">Backend</CardHeader>
             <CardBody>
@@ -69,7 +54,7 @@ class InstanceDetailsMetricTab extends React.Component {
   showBackendGroup() {
     if(this.instance && (this.instance.web_status_body.state === 'ok') ) {
       return (
-        <Col>
+        <Col className='col-std'>
           <Card>
             <CardHeader tag="h3">Frontend</CardHeader>
             <CardBody>
@@ -107,7 +92,7 @@ class InstanceDetailsMetricTab extends React.Component {
   showButtons() {
     if(this.instance) {
       return (
-        <Col>
+        <Col className='col-std'>
           <a className="instance-link btn btn-secondary btn-block" 
               href={this.instance.url} 
               target="_blank" rel="noopener noreferrer">Goto Instance</a>       
@@ -137,17 +122,17 @@ class InstanceDetailsMetricTab extends React.Component {
         <Form>
           <FormGroup>
             <Label>Real IP Address</Label>
-            <Input value={this.instance.real_ip}  />
+            <Input value={this.instance.real_ip} readOnly />
           </FormGroup>
 
           <FormGroup>
             <Label>Hosting provider</Label>
-            <Input value={this.instance.hosting_provider}  />
+            <Input value={this.instance.hosting_provider} readOnly  />
           </FormGroup>
 
           <FormGroup>
             <Label>URL</Label>
-            <Input value={this.instance.url}  />
+            <Input value={this.instance.url} readOnly />
           </FormGroup>
         </Form>
       </div>
@@ -161,11 +146,6 @@ class InstanceDetailsMetricTab extends React.Component {
 
         return (
             <div>
-              <Row>
-                <Col>
-                  <h2>{this.title}</h2>
-                </Col>
-              </Row>
               <Row>
                   {this.showWebGroup()}
 

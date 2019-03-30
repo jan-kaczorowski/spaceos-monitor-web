@@ -1,21 +1,20 @@
-import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
-import { connect } from 'react-redux'
-
-
+import AuthService from './auth-service'
 
 class ApiService  {
     static instance = new ApiService()
 
     //apiRootPath = 'https://orange.jankaczorowski.pl/api'
     //apiRootPath = 'http://127.0.0.1:4000/api'
-    apiRootPath = 'https://orange.jankaczorowski.pl/api'
+    apiRootPath = 'https://spaceos-monitor.jankaczorowski.pl/api'
 
     commonHeaders = {
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "Authorization": `Bearer ${AuthService.getToken()}`
     }
     postHeaders = {
         "Accept": "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${AuthService.getToken()}`
     }
 
     apiRootPath() { return this.apiRootPath; }
@@ -27,7 +26,16 @@ class ApiService  {
     getEndpoint(relativePath) {
         return fetch(this.apiRootPath + relativePath, { 
             headers: this.commonHeaders
-        }).then(response => response.json())    
+        }).then(response => {
+            console.log('asad',response)
+            if(response.status === 200) {
+                console.log(response)
+                return response.json()
+            } else {
+                console.error('err while calling'+relativePath,response.status)
+                return { data: [] }
+            }
+        })  
     }
 
     updateClient(id,changeset) {
@@ -45,10 +53,23 @@ class ApiService  {
             body: JSON.stringify({client: changeset})
         })
     }
+
+    updateInstance(id,changeset) {
+        return fetch(this.apiRootPath + "/instances/"+id, {
+            headers: this.postHeaders,
+            method: 'PUT',
+            body: JSON.stringify({instance: changeset})
+        })
+    }
+
+    createInstance(changeset) {
+        return fetch(this.apiRootPath + "/instances", {
+            headers: this.postHeaders,
+            method: 'POST',
+            body: JSON.stringify({instance: changeset})
+        })
+    }
 }
 
 
 export default ApiService.instance
-
-
-//export default connect(mapStateToProps, mapDispatchToProps)(ApiService.instance)

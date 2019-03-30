@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import InstanceTableRow from './instance-table/InstanceTableRow'
-import { Table, Progress, Badge } from 'reactstrap';
+import NavBar from './NavBar'
+import { Table, Row, Col, Progress, Badge, Button } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import InstanceDetailsModal from './instance-details/InstanceDetailsModal'
-import ApiService from '../services/api-service'
+
 class StatusChecker extends Component {
     
     constructor(props) {
         super(props)
-        this.apiService = ApiService
-
         this.timerId = setInterval(this.decreaseTimeout.bind(this), 1000);
         this.audioFile = new Audio('sounds/bamboo.mp3')
         this.playSounds = localStorage.getItem('AUDIO_ENABLED')
@@ -40,6 +39,15 @@ class StatusChecker extends Component {
         } 
     }
 
+    prepNewInstance(e) {
+        const new_instance = {
+            backend_status_body: { state: null},
+            web_status_body: { state: null},
+            name: '<New instance>'
+        }
+        this.props.toggleInstanceModal(new_instance, true)
+    }
+
 
     componentDidUpdate(prevProps) {
         if ( (this.props.instanceTypeFilter !== prevProps.instanceTypeFilter) || 
@@ -54,51 +62,64 @@ class StatusChecker extends Component {
 
     render() {
         return(
-            <div>
-                <div className="text-center">
-                    <small>Time to next refresh:</small> <Badge color="info">{this.props.globalTimer }s</Badge>
-                </div>
-                <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
+        <div>
+            <Row>
+                <Col>
+                <NavBar/>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <div className="text-center">
+                        <small>Time to next refresh:</small> <Badge color="info">{this.props.globalTimer }s</Badge>
+                    </div>
+                    <Progress striped color="info" value={this.props.globalTimer * 100 / 30 } />
                 
-                <Table responsive hover size="sm">
-                    <thead>
-                        <tr>
-                            <th colSpan="5">Common info</th>
-                            <th colSpan="4" className="left-border">Backend status</th>
-                            <th colSpan="4" className="left-border">Frontend status</th>
-                        </tr>
-                        <tr>
-                            <th>#</th>
-                            <th>Client</th>
-                            <th>Instance</th>
-                            <th>Type</th>
-                            <th>Health</th>
-                            <th className="left-border">Committer</th>
-                            <th>Commit Msg</th>
-                            <th>Commit Time</th>
-                            <th>Commit hash</th>
-                            <th className="left-border">Committer</th>
-                            <th>Commit Msg</th>
-                            <th>Commit Time</th>
-                            <th>Commit hash</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.instanceFeed(this.props.instanceTypeFilter, this.props.instanceNameFilter)
-                                .map(function(instance, i){
-                                return(
-                                    <InstanceTableRow 
-                                        identifier={i} 
-                                        key={instance.id} 
-                                        instance={instance}/>
-                                )
-                            })
-                        }
-                    </tbody>
-                </Table>
-                <InstanceDetailsModal />
-            </div>
+                    <Button size="lg" color="primary" className="new-instance-button" onClick={this.prepNewInstance.bind(this)}>
+                        New Instance
+                    </Button>
+
+                    <Table responsive hover size="sm">
+                        <thead>
+                            <tr>
+                                <th colSpan="5">Common info</th>
+                                <th colSpan="4" className="left-border">Backend status</th>
+                                <th colSpan="4" className="left-border">Frontend status</th>
+                            </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Client</th>
+                                <th>Instance</th>
+                                <th>Type</th>
+                                <th>Health</th>
+                                <th className="left-border">Committer</th>
+                                <th>Commit Msg</th>
+                                <th>Commit Time</th>
+                                <th>Commit hash</th>
+                                <th className="left-border">Committer</th>
+                                <th>Commit Msg</th>
+                                <th>Commit Time</th>
+                                <th>Commit hash</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.instanceFeed(this.props.instanceTypeFilter, this.props.instanceNameFilter)
+                                    .map(function(instance, i){
+                                    return(
+                                        <InstanceTableRow 
+                                            identifier={i} 
+                                            key={instance.id} 
+                                            instance={instance}/>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </Table>
+                    <InstanceDetailsModal />
+                </Col>
+            </Row>
+        </div>
         );
     }
 }

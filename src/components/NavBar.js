@@ -15,8 +15,6 @@ import {
 import { Link } from 'react-router-dom';
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import { connect } from 'react-redux'
-import { GoogleLogin } from 'react-google-login';
-import ApiService from '../services/api-service'
 //import { GoogleAPI, GoogleLogin } from 'react-google-oauth';
 
 class NavBar extends React.Component {
@@ -24,7 +22,6 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
-    this.apiService = ApiService
     this.state = {
       isOpen: false,
       instanceTypes: [
@@ -43,21 +40,6 @@ class NavBar extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
-
-  responseGoogle(arg) {
-    let scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
-    console.info(JSON.stringify(arg))
-    fetch(
-      `https://orange.jankaczorowski.pl/oauth/google/callback?code=${arg.code}&scope=${scope}`
-    ).then( (response ) => response.json())
-      .then((json) => {
-        alert(JSON.stringify(json))
-        localStorage.setItem("JWT",json.jwt)
-      })
-  }
-
-  loginSuccess(arg) { alert("LOGIN SUCCESS "+JSON.stringify(arg)) }
-  loginFailure(arg) { alert("LOGIN FAILURE "+JSON.stringify(arg)) }
 
   renderButtonsForInstanceTypes() {
     return this.state.instanceTypes.map((elem) => {
@@ -117,16 +99,21 @@ class NavBar extends React.Component {
   }
 
   secondaryMenu() {
-    if(window.location.pathname === '/') {
+    switch(window.location.pathname) {
+      case '/instances/list': 
         return this.instancesListMenu()
-    } else return ''
+      case '/':
+        return this.instancesListMenu()  
+
+      default: return '';
+    }
   }
 
   render() {
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">SpaceOS Instances</NavbarBrand>
+          <NavbarBrand href="/instances/list">SpaceOS Instances</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav>
@@ -134,7 +121,7 @@ class NavBar extends React.Component {
                     <Link to="/">Home</Link>
                 </NavItem>
                 <NavItem className="internal-link">
-                    <Link to="/about">About</Link>
+                    <Link to="/instances/list">Instances List</Link>
                 </NavItem>
                 <NavItem className="internal-link">
                     <Link to="/clients/list">Clients List</Link>
@@ -145,17 +132,6 @@ class NavBar extends React.Component {
 
           </Collapse>
 
-          <GoogleLogin
-                clientId="809444742970-it8fsvjt7genve9u9qh1iclcmf6vuanc.apps.googleusercontent.com"
-                buttonText="Login"
-                responseType="code"
-                accessType="offline"
-                uxMode="popup"
-                fetchBasicProfile={false}
-                scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
-                onSuccess={this.responseGoogle}
-                onFailure={this.responseGoogle}
-              />
         </Navbar>
       </div>
     );

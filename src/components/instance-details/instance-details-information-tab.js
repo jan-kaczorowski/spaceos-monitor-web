@@ -3,152 +3,195 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../../store/reducer_interface'
-import {
-    Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem,
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    Input,
-    Card, CardImg, CardText, CardBody, CardHeader,
-    CardTitle, CardSubtitle,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu, Form, FormGroup, Label,
-    DropdownItem} from 'reactstrap';
-    
+import { Row, Col, Button, Input, FormText, Form, FormGroup, Label } from 'reactstrap';
+import ApiService from '../../services/api-service'
+
 class InstanceDetailsInformationTab extends React.Component {
 
   constructor(props) {
     super(props);
     this.instance = props.instanceModalResource
-  }
-// Locations -> information
-  showWebGroup() {
-    if(this.instance && (this.instance.backend_status_body.state === 'ok') ) {
-      return (
-        <Col>
-          <Card>
-            <CardHeader tag="h3">Backend</CardHeader>
-            <CardBody>
-                <dl>
-                  <dt>Commit hash</dt>
-                  <dd>{ this.instance.backend_status_body.body.git_commit_data.commit_hash }</dd>
-
-                  <dt>Commit date</dt>
-                  <dd>{this.instance.backend_status_body.body.git_commit_data.commit_timestamp }</dd>
-
-                  <dt>Commit subject</dt>
-                  <dd>{this.instance.backend_status_body.body.git_commit_data.commit_subject }</dd>
-                
-                  <dt>Branch name</dt>
-                  <dd>{this.instance.backend_status_body.body.git_commit_data.branch_name }</dd>
-                
-                  <dt>Commiter name</dt>
-                  <dd>{this.instance.backend_status_body.body.git_commit_data.committer_name }</dd>
-                
-                  <dt>Build timestamp</dt>
-                  <dd>{this.instance.backend_status_body.body.git_commit_data.build_timestamp }</dd>
-                    
-                  <dt>Build number</dt>
-                  <dd>{this.instance.backend_status_body.body.git_commit_data.build_number }</dd>
-                
-                </dl>    
-              <Button color="secondary" block href="#">Goto Jenkins job</Button>
-            </CardBody>
-          </Card>        
-        </Col>
-      )
-    } else return '';
+    this.instance_types = {
+      demo: 0, 
+      production: 1, 
+      taging: 2, 
+      feature: 3
+    }
+    this.instance_statuses = {
+      inactive: 0, 
+      active: 1, 
+      retired: 2
+    }
+    this.state = { changeset: Object.assign({},this.props.instanceModalResource) }
   }
 
-  showBackendGroup() {
-    if(this.instance && (this.instance.web_status_body.state === 'ok') ) {
-      return (
-        <Col>
-          <Card>
-            <CardHeader tag="h3">Frontend</CardHeader>
-            <CardBody>
-                <dl>
-                  <dt>Commit hash</dt>
-                  <dd>{ this.instance.web_status_body.body.commit_hash }</dd>
-
-                  <dt>Commit date</dt>
-                  <dd>{this.instance.web_status_body.body.commit_timestamp }</dd>
-                  
-                  <dt>Commit subject</dt>
-                  <dd>{this.instance.web_status_body.body.commit_subject }</dd>                
-                  
-                  <dt>Branch name</dt>
-                  <dd>{this.instance.web_status_body.body.branch_name }</dd>
-                
-                  <dt>Commiter name</dt>
-                  <dd>{this.instance.web_status_body.body.committer_name }</dd>
-                
-                  <dt>Build timestamp</dt>
-                  <dd>{this.instance.web_status_body.body.build_timestamp }</dd>
-                    
-                  <dt>Build number</dt>
-                  <dd>{this.instance.web_status_body.body.build_number }</dd>
-                
-                </dl>    
-              <Button color="secondary" block href="#">Goto Jenkins job</Button>
-            </CardBody>
-          </Card>        
-        </Col>
-      )
-    } else return '';
+  close() {
+    this.setState(function(state){
+        state.changeset = null
+        return state
+    })
+    this.props.toggleInstanceModal(null) 
   }
 
-  showButtons() {
-    if(this.instance) {
-      return (
-        <Col>
-          <a className="instance-link btn btn-secondary btn-block" 
-              href={this.instance.url} 
-              target="_blank" rel="noopener noreferrer">Goto Instance</a>       
-          
-          <br/>
-          
-          <a className="instance-link btn btn-outline-secondary btn-block disabled" 
-              href={this.instance.url} 
-              target="_blank" rel="noopener noreferrer">Goto Portainer</a>  
-          
-          <br/>
+  handleChange(event) {
+    const param_name = event.target.name
+    const param_val = event.target.value
 
-          <a className="instance-link btn btn-outline-secondary btn-block" 
-              href={this.instance.url+'/api/v2/config'} 
-              target="_blank" rel="noopener noreferrer">Goto Config (GitHub)</a>     
-
-          {this.showMiniForm()}            
-        </Col>
-      )
-    } else return '';
+    this.setState(function(state){
+        state.changeset[param_name] = param_val
+        console.log(state.changeset)
+        return state
+    })
   }
 
-  showMiniForm() {
+  componentWillUpdate(nextProps, nextState) {
+    if(nextProps.instanceModalResource !== this.props.instanceModalResource) {
+      nextState.changeset = Object.assign({},nextProps.instanceModalResource)
+      delete nextState.changeset.id
+      return nextState
+    }
+  }
+
+  submitChanges(){
+    if(this.props.instanceModalResource.id) {
+        console.log('update instance')
+        ApiService.updateInstance(this.props.instanceModalResource.id,
+            this.state.changeset
+        ).then((res) => alert(JSON.stringify(res)))
+
+    } else { //POST
+        console.log('create instance')
+        ApiService.createInstance(this.state.changeset).then((res) => alert(JSON.stringify(res)))
+    }
+  }
+
+  leftColForm() {
     return (
       <div>
-        <br/>
-        <Form>
           <FormGroup>
-            <Label>Real IP Address</Label>
-            <Input value={this.instance.real_ip}  />
+              <Label for="name">Instance Name</Label>
+              <Input type="text" 
+                     name="name" 
+                     id="name" 
+                     value={this.state.changeset.name} 
+                     onChange={this.handleChange.bind(this)}
+                     />
+              <FormText>Example help text that remains unchanged.</FormText>
           </FormGroup>
 
           <FormGroup>
-            <Label>Hosting provider</Label>
-            <Input value={this.instance.hosting_provider}  />
-          </FormGroup>
+              <Label for="url">Instance full URL</Label>
+              <Input type="text" 
+                     name="url" 
+                     id="url" 
+                     value={this.state.changeset.url}
+                     onChange={this.handleChange.bind(this)}
+                     />
+              <FormText>Example help text that remains unchanged.</FormText>
+          </FormGroup>  
 
           <FormGroup>
-            <Label>URL</Label>
-            <Input value={this.instance.url}  />
-          </FormGroup>
-        </Form>
+              <Label for="client_id">Instance belongs to client</Label>
+              <Input type="select" 
+                     name="client_id" 
+                     id="client_id"
+                     onChange={this.handleChange.bind(this)}
+                     defaultValue={this.state.changeset.client_id}
+                     >
+                  {this.props.clients.map((el, index) => <option key={index+1} value={el.id}>{el.name}</option>)}
+              </Input>
+              <FormText>Example help text that remains unchanged.</FormText>
+          </FormGroup>  
+      </div>
+    )
+  }
+
+  middleColForm() {
+    return (
+      <div>
+        <FormGroup>
+            <Label for="slug">Slug</Label>
+            <Input  type="text" 
+                    name="slug" 
+                    id="slug" 
+                    value={this.instance.slug} 
+                    onChange={this.handleChange.bind(this)}
+                    />
+            <FormText>Example help text that remains unchanged.</FormText>
+        </FormGroup>
+
+        <FormGroup>
+              <Label for="type">Instance type</Label>
+              <Input  type="select" 
+                      name="type" 
+                      id="type"
+                      onChange={this.handleChange.bind(this)}
+                      defaultValue={this.state.changeset.type}
+                      >
+                  {Object.keys(this.instance_types).map((el, index) => <option key={index+1} value={this.instance_types[el]}>{el}</option>)}
+              </Input>
+              <FormText>Example help text that remains unchanged.</FormText>
+        </FormGroup>  
+
+        <FormGroup>
+              <Label for="status">Instance status</Label>
+              <Input type="select" 
+                     name="status" 
+                     id="status"
+                     onChange={this.handleChange.bind(this)}
+                     defaultValue={this.state.changeset.status}
+                     >
+                  {Object.keys(this.instance_statuses).map((el, index) => <option key={index+1} value={this.instance_statuses[el]} >{el}</option>)}
+              </Input>
+              <FormText>Example help text that remains unchanged.</FormText>
+        </FormGroup>  
+                       
+      </div>
+    )
+  }
+
+  rightColForm() {
+    return (
+      <div>
+        <FormGroup>
+            <Label for="real_ip">Real IP</Label>
+            <Input type="text" 
+                   name="real_ip" 
+                   id="real_ip" 
+                   value={this.state.changeset.real_ip} 
+                   onChange={this.handleChange.bind(this)}
+                   />
+            <FormText>Example help text that remains unchanged.</FormText>
+        </FormGroup>
+
+        <FormGroup>
+            <Label for="hosting_provider">Hosting Provider</Label>
+            <Input type="text" 
+                   name="hosting_provider" 
+                   id="hosting_provider" 
+                   value={this.state.changeset.hosting_provider} 
+                   onChange={this.handleChange.bind(this)}
+                   />
+            <FormText>Example help text that remains unchanged.</FormText>
+        </FormGroup>        
+      </div>
+    )
+  }
+
+
+  showNotesField() {
+    return (
+      <div>
+        <FormGroup>
+          <Label for="notes">Notes</Label>
+          <Input type="textarea" 
+                 name="name" 
+                 id="name" 
+                 value={this.state.changeset.notes} 
+                 onChange={this.handleChange.bind(this)}
+                 />
+          <FormText>Example help text that remains unchanged.</FormText>
+        </FormGroup>      
       </div>
     )
   }
@@ -157,10 +200,23 @@ class InstanceDetailsInformationTab extends React.Component {
       
       if(this.instance) {
         
-
         return (
             <div>
-              <pre>Information</pre> 
+              <Form>
+                  <Row>
+                    <Col>{this.leftColForm()}</Col>
+                    <Col>{this.middleColForm()}</Col>
+                    <Col>{this.rightColForm()}</Col>
+                  </Row>
+                  <Row>
+                    <Col>{this.showNotesField()}</Col>
+                  </Row>
+              </Form>
+              <Row>
+                <Col>
+                  <Button color="primary" size="lg" className="float-right" onClick={this.submitChanges.bind(this)}>Modify</Button>
+                </Col>
+              </Row>
             </div>
           );
       } else return('')

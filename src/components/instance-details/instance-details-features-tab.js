@@ -3,24 +3,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../../store/reducer_interface'
-import {
-    Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem,
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    Input,
-
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem} from 'reactstrap';
-      
-
-
 // Features
 
 class InstanceDetailsFeaturesTab extends React.Component {

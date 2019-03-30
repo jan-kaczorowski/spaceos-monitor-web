@@ -4,7 +4,7 @@ import React from 'react';
 import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../../store/reducer_interface'
-import { Nav, NavItem, NavLink, Input, Form, FormGroup, FormFeedback, FormText, Label } from 'reactstrap';
+import { Input, Form, FormGroup, FormText, Label } from 'reactstrap';
 import ApiService from '../../services/api-service'
 
 class ClientDetailsModal extends React.Component {

@@ -22,22 +22,34 @@ class CommonInfoTableRowFragment extends React.Component {
         }
     }
 
+    health() {
+        const inst = this.state.instance
+        if ((inst.backend_status_http_code === 200) && (inst.web_status_http_code === 200)) {
+            return 'healthy'
+        } else if ((inst.backend_status_http_code === 999) && (inst.web_status_http_code === 999)) {
+            return 'unknown'
+        } else {
+            return 'danger'
+        }
+    }
+
     renderInstanceHealthIcon() {
-        if(this.state.instance.backend_status_body) {
+        const health = this.health()
+        if(health === 'healthy') {
             return (
                 <td>
                     <img src={checked} className="icon icon-checked" alt="icon-checked" />
                 </td>
             )
         }
-        else if(this.state.instance.errors) {
+        else if(health === 'danger') {
             return (
                 <td>
                     <img src={flame} className="icon icon-flame" alt="icon-flame" />
                 </td>
             )
         }
-        else if(!this.state.instance.errors && !this.state.instance.coreHealth) {
+        else if(health === 'unknown') {
             return (
                 <td>
                     <img src={question} className="icon icon-question" alt="icon-question" />

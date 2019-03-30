@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
 import StatusChecker from './components/StatusChecker'
-import NavBar from './components/NavBar'
 import AboutPage from './components/AboutPage'
 import ClientsList from './components/clients-management/ClientsList'
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import LoginScreen from './components/LoginScreen';
+import AuthService from './services/auth-service'
+import { UnauthRoute, AuthRoute } from 'react-router-auth'
+import ProtectedRoute from './components/ProtectedRoute'
 import './App.css';
 
 class App extends Component {
+  overlay() {
+    return (AuthService.isLoggedIn()) ? '' : (<div className='overlay'></div>);
+  }
+
   render() {
     return (
-      <Router>
-      <Container fluid>
-        <Row>
-          <Col>
-            <NavBar/>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-                <Route exact path="/" component={StatusChecker} />
-                <Route path="/about" component={AboutPage} />                   
-                <Route path="/clients/list" component={ClientsList} />                   
-          </Col>
-        </Row>
-      </Container>
-      </Router>
+      <div>
+          {this.overlay()}
+          <Router>
+            <Container fluid>
+                    <UnauthRoute exact path="/" component={LoginScreen} redirectTo="/instances/list" authenticated={AuthService.isLoggedIn()}  />                                   
+                    
+                    <AuthRoute path="/instances/list" component={StatusChecker} redirectTo="/" authenticated={AuthService.isLoggedIn()} /> 
+                    <AuthRoute path="/clients/list"   component={ClientsList}   redirectTo="/" authenticated={AuthService.isLoggedIn()} /> 
+                    {/* <AuthRoute path="/about" component={AboutPage} redirectTo="/" authenticated={AuthService.isLoggedIn()} />  */}
+            </Container>
+          </Router>
+      </div>
     );
   }
 }
