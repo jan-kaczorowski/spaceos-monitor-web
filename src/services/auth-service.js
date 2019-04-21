@@ -1,7 +1,4 @@
 
-import React from 'react';
-import { Redirect } from 'react-router-dom'
-
 const jwt = require('jsonwebtoken')
 
 class AuthService  {
@@ -14,7 +11,7 @@ class AuthService  {
 
     responseGoogle(arg) {
         let scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
-        console.info(JSON.stringify(arg))
+        console.info('responseGoogle' + JSON.stringify(arg))
         this.getConfig().then(
             ()=>{
                 fetch(
@@ -26,16 +23,14 @@ class AuthService  {
                     .then((json) => {
                     localStorage.setItem(this.jwt_key_name,json.jwt)
                 })
-        .then(() => (<Redirect to='/instances/list' />) )
             }
         )
-
     }
 
     isLoggedIn() {
-        const res = (typeof this.decodedToken()) && this.isTokenValid()
+        let res = (typeof this.decodedToken()) && this.isTokenValid()
         console.log('isLoggedIn',res)
-        return res;
+        return res
     }
 
     logout() {
@@ -65,7 +60,6 @@ class AuthService  {
             this.destroyToken()
             return false
         }
-
     }
 
     decodedToken() {
@@ -96,6 +90,5 @@ class AuthService  {
     }
 
 }
-
 
 export default AuthService.instance

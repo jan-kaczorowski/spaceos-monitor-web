@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
       clientModalShow: state.clientModalShow,
       clientModalResource: state.clientModalResource,      
       clients: state.clients,
-      instances: state.instances
+      instances: state.instances,
+      isAuthenticated: state.isAuthenticated
     }
 }
 const mapDispatchToProps = (dispatch) => {

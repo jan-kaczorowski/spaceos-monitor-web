@@ -1,9 +1,11 @@
 
+import AuthService from '../services/auth-service'
 
 const initialState = {
     globalTimer: 30,
     initialInstanceTypeFilter: null,
-    initialInstanceNameFilter: ''
+    initialInstanceNameFilter: '',
+    isAuthenticated: AuthService.isLoggedIn.bind(AuthService)
 }
 
 const reducer = (state = initialState, action) => {
@@ -62,6 +64,7 @@ const reducer = (state = initialState, action) => {
             newState.clientModalShow = false
             newState.clients = []
             newState.instances = []
+            newState.isAuthenticated = AuthService.isLoggedIn.bind(AuthService)
             break;
         }
     }
