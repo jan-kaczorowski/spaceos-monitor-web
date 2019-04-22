@@ -7,6 +7,19 @@ class AuthService  {
     constructor() {
         this.jwt_key_name = 'JWT_TOKEN'
         this.config = null;
+        
+        // setInterval(()=>{
+        //     console.log('tik tak')
+        //     const curr_val =  JSON.parse(localStorage.getItem('AAA'))
+        //     if(curr_val === true) {
+        //         localStorage.setItem('AAA','false') 
+        //     } else if (curr_val=== false) {
+        //         localStorage.setItem('AAA','true')
+        //     } else {
+        //         localStorage.setItem('AAA','false')
+        //     }
+        //     console.log('Value n: ',curr_val)
+        // },3000)
     }
 
     responseGoogle(arg) {
@@ -29,6 +42,7 @@ class AuthService  {
 
     isLoggedIn() {
         let res = (typeof this.decodedToken()) && this.isTokenValid()
+        //res = JSON.parse(localStorage.getItem('AAA'))
         console.log('isLoggedIn',res)
         return res
     }
