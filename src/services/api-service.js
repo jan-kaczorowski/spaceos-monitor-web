@@ -5,7 +5,7 @@ class ApiService  {
 
     //apiRootPath = 'https://orange.jankaczorowski.pl/api'
     //apiRootPath = 'http://127.0.0.1:4000/api'
-    apiRootPath = 'https://spaceos-monitor.jankaczorowski.pl/api' //<-- config
+    //apiRootPath = 'https://spaceos-monitor.jankaczorowski.pl/api' //<-- config
 
     commonHeaders() {
         return {
@@ -33,23 +33,26 @@ class ApiService  {
                 };
                 store.dispatch({type: 'SAVE_CONFIG', config_data: config_data}) 
                 resolve(config_data)
-            },100)
+            }, 100)
         })
     }
 
-    apiRootPath() { return this.apiRootPath; }
+    apiRootPath() { return store.getState().config.api_root_path; }
 
     getInstances = () => this.getEndpoint("/instances")
 
     getClients = () => this.getEndpoint("/clients")
 
+    precheckAuth() {
+        if(!AuthService.checkAuthentication()) return;
+    }
+
     getEndpoint(relativePath) {
         if(!AuthService.checkAuthentication()) return;
-        return fetch(this.apiRootPath + relativePath, { 
+        return fetch(this.apiRootPath() + relativePath, { 
             headers: this.commonHeaders()
         }).then(response => {
             if(response.status === 200) {
-                console.log(response)
                 return response.json()
             } else {
                 console.error('err while calling'+relativePath,response.status)
@@ -60,7 +63,7 @@ class ApiService  {
 
     updateClient(id,changeset) {
         if(!AuthService.checkAuthentication()) return;
-        return fetch(this.apiRootPath + "/clients/"+id, {
+        return fetch(this.apiRootPath() + "/clients/"+id, {
             headers: this.postHeaders(),
             method: 'PUT',
             body: JSON.stringify({client: changeset})
@@ -69,7 +72,7 @@ class ApiService  {
 
     createClient(changeset) {
         if(!AuthService.checkAuthentication()) return;
-        return fetch(this.apiRootPath + "/clients", {
+        return fetch(this.apiRootPath() + "/clients", {
             headers: this.postHeaders(),
             method: 'POST',
             body: JSON.stringify({client: changeset})
@@ -78,7 +81,7 @@ class ApiService  {
 
     updateInstance(id,changeset) {
         if(!AuthService.checkAuthentication()) return;
-        return fetch(this.apiRootPath + "/instances/"+id, {
+        return fetch(this.apiRootPath() + "/instances/"+id, {
             headers: this.postHeaders(),
             method: 'PUT',
             body: JSON.stringify({instance: changeset})
@@ -87,7 +90,7 @@ class ApiService  {
 
     createInstance(changeset) {
         if(!AuthService.checkAuthentication()) return;
-        return fetch(this.apiRootPath + "/instances", {
+        return fetch(this.apiRootPath() + "/instances", {
             headers: this.postHeaders(),
             method: 'POST',
             body: JSON.stringify({instance: changeset})

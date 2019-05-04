@@ -44,7 +44,7 @@ class ClientDetailsModal extends React.Component {
             console.log('update client')
             ApiService.updateClient(this.props.clientModalResource.id,
                 this.state.changeset
-            ).then((res) => alert(JSON.stringify(res)))
+            ).then((res) => console.log('RES: '+JSON.stringify(res)))
 
         } else { //POST
             console.log('create client')
@@ -63,12 +63,12 @@ class ClientDetailsModal extends React.Component {
                         <Row>
                             <Col>
                                 <h2>{this.props.clientModalResource.name}</h2>
-                                <pre>
+                                {/* <pre>
                                     State: {JSON.stringify(this.state)}
                                 </pre>
                                 <pre>
                                     Props: {JSON.stringify(this.props.clientModalResource)}
-                                </pre>
+                                </pre> */}
                                 <Form>
                                     <FormGroup>
                                         <Label for="client_name">Client Name</Label>

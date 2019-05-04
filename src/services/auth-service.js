@@ -48,7 +48,6 @@ class AuthService  {
     isLoggedIn() {
         const decoded_token = this.decodedToken();
         let res = (typeof decoded_token === 'object') && this.isTokenValid(decoded_token)
-        console.log('isLoggedIn',res)
         return res
     }
 

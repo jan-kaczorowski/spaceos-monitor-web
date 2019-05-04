@@ -14,13 +14,13 @@ class InstanceDetailsInformationTab extends React.Component {
     this.instance_types = {
       demo: 0, 
       production: 1, 
-      taging: 2, 
+      staging: 2, 
       feature: 3
     }
     this.instance_statuses = {
       inactive: 0, 
       active: 1, 
-      retired: 2
+      retired: 2 
     }
     this.state = { changeset: Object.assign({},this.props.instanceModalResource) }
   }
@@ -46,7 +46,7 @@ class InstanceDetailsInformationTab extends React.Component {
 
   componentWillUpdate(nextProps, nextState) {
     if(nextProps.instanceModalResource !== this.props.instanceModalResource) {
-      nextState.changeset = Object.assign({},nextProps.instanceModalResource)
+      nextState.changeset = Object.assign({}, nextProps.instanceModalResource)
       delete nextState.changeset.id
       return nextState
     }
@@ -57,7 +57,7 @@ class InstanceDetailsInformationTab extends React.Component {
         console.log('update instance')
         ApiService.updateInstance(this.props.instanceModalResource.id,
             this.state.changeset
-        ).then((res) => alert(JSON.stringify(res)))
+        ).then((res) => console.log('RES: '+ JSON.stringify(res)))
 
     } else { //POST
         console.log('create instance')
@@ -127,8 +127,9 @@ class InstanceDetailsInformationTab extends React.Component {
                       id="type"
                       onChange={this.handleChange.bind(this)}
                       defaultValue={this.state.changeset.type}
+                      value={this.state.changeset.type}
                       >
-                  {Object.keys(this.instance_types).map((el, index) => <option key={index+1} value={this.instance_types[el]}>{el}</option>)}
+                  {Object.keys(this.instance_types).map((el, index) => <option key={index+1} value={el}>{el}</option>)}
               </Input>
               <FormText>Example help text that remains unchanged.</FormText>
         </FormGroup>  
@@ -140,6 +141,7 @@ class InstanceDetailsInformationTab extends React.Component {
                      id="status"
                      onChange={this.handleChange.bind(this)}
                      defaultValue={this.state.changeset.status}
+                     value={this.state.changeset.status}
                      >
                   {Object.keys(this.instance_statuses).map((el, index) => <option key={index+1} value={this.instance_statuses[el]} >{el}</option>)}
               </Input>
@@ -185,8 +187,8 @@ class InstanceDetailsInformationTab extends React.Component {
         <FormGroup>
           <Label for="notes">Notes</Label>
           <Input type="textarea" 
-                 name="name" 
-                 id="name" 
+                 name="notes" 
+                 id="notes" 
                  value={this.state.changeset.notes} 
                  onChange={this.handleChange.bind(this)}
                  />

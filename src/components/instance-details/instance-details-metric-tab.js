@@ -13,6 +13,24 @@ class InstanceDetailsMetricTab extends React.Component {
     this.title = 'Metric'
   }
 
+  webJenkinsJobLink() {
+    if(!this.instance.slug) return '';
+    return (
+      <a className="btn btn-secondary btn-block" 
+      href={'https://jenkins.up-next.com/job/wms_web_build-'+this.instance.slug} 
+      target="_blank" rel="noopener noreferrer">Goto Web Build Jenkins job</a>  
+    )
+  }
+
+  coreJenkinsJobLink() {
+    if(!this.instance.slug) return '';
+    return (
+      <a className="btn btn-secondary btn-block" 
+      href={'https://jenkins.up-next.com/job/wms_core_release-'+this.instance.slug} 
+      target="_blank" rel="noopener noreferrer">Goto Core Release Jenkins job</a>  
+    )
+  }
+
   showWebGroup() {
     if(this.instance && (this.instance.backend_status_body.state === 'ok') ) {
       return (
@@ -43,7 +61,7 @@ class InstanceDetailsMetricTab extends React.Component {
                   <dd>{this.instance.backend_status_body.body.git_commit_data.build_number }</dd>
                 
                 </dl>    
-              <Button color="secondary" block href="#">Goto Jenkins job</Button>
+              {this.coreJenkinsJobLink()}
             </CardBody>
           </Card>        
         </Col>
@@ -81,7 +99,7 @@ class InstanceDetailsMetricTab extends React.Component {
                   <dd>{this.instance.web_status_body.body.build_number }</dd>
                 
                 </dl>    
-              <Button color="secondary" block href="#">Goto Jenkins job</Button>
+              {this.webJenkinsJobLink()}
             </CardBody>
           </Card>        
         </Col>
@@ -96,11 +114,11 @@ class InstanceDetailsMetricTab extends React.Component {
           <a className="instance-link btn btn-secondary btn-block" 
               href={this.instance.url} 
               target="_blank" rel="noopener noreferrer">Goto Instance</a>       
-          
+
           <br/>
           
-          <a className="instance-link btn btn-outline-secondary btn-block disabled" 
-              href={this.instance.url} 
+          <a className="instance-link btn btn-outline-secondary btn-block" 
+              href={'http://'+this.instance.real_ip+':9000'} 
               target="_blank" rel="noopener noreferrer">Goto Portainer</a>  
           
           <br/>
