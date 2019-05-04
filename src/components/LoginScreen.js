@@ -4,7 +4,7 @@ import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import AuthService from '../services/auth-service'
 import { GoogleLogin } from 'react-google-login';
 import { Form, FormGroup, Jumbotron, Row, Col, Input } from 'reactstrap';
-import { withRouter } from 'react-router-dom'
+
 class LoginScreen extends Component {
 
     constructor(props){
@@ -99,4 +99,5 @@ class LoginScreen extends Component {
     
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+//export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginScreen));

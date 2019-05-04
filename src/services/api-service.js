@@ -1,11 +1,12 @@
 import AuthService from './auth-service'
-
+import store from '../store/store'
 class ApiService  {
+
     static instance = new ApiService()
 
     //apiRootPath = 'https://orange.jankaczorowski.pl/api'
     //apiRootPath = 'http://127.0.0.1:4000/api'
-    apiRootPath = 'https://spaceos-monitor.jankaczorowski.pl/api'
+    apiRootPath = 'https://spaceos-monitor.jankaczorowski.pl/api' //<-- config
 
     commonHeaders = {
         "Accept": "application/json",
@@ -29,6 +30,8 @@ class ApiService  {
         }).then(response => {
             console.log('asad',response)
             if(response.status === 200) {
+                console.log("STORE",store.getState()) //not needed
+                console.log("STORE obj",store) //not needed
                 console.log(response)
                 return response.json()
             } else {
@@ -69,6 +72,7 @@ class ApiService  {
             body: JSON.stringify({instance: changeset})
         })
     }
+
 }
 
 

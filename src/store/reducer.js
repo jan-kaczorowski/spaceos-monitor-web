@@ -5,7 +5,8 @@ const initialState = {
     globalTimer: 30,
     initialInstanceTypeFilter: null,
     initialInstanceNameFilter: '',
-    isAuthenticated: AuthService.isLoggedIn.bind(AuthService)
+    isAuthenticated: false,
+    jwtToken: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -53,6 +54,22 @@ const reducer = (state = initialState, action) => {
             break;
         }
 
+        case 'AUTHORIZE': {
+            console.log('is Authenticated!')
+            newState.isAuthenticated = true;
+            break;
+        }
+
+        case 'SAVE_JWT_TOKEN': {
+            newState.jwtToken = action.jwtToken
+            break;
+        }
+
+        case 'LOGOUT': {
+            newState.isAuthenticated = false;
+            break;
+        }
+
         default: {
             newState.globalTimer = initialState.globalTimer;
             newState.instanceNameFilter = initialState.initialInstanceNameFilter;
@@ -64,7 +81,8 @@ const reducer = (state = initialState, action) => {
             newState.clientModalShow = false
             newState.clients = []
             newState.instances = []
-            newState.isAuthenticated = AuthService.isLoggedIn.bind(AuthService)
+            newState.isAuthenticated = initialState.isAuthenticated;
+            newState.jwtToken = initialState.jwtToken;
             break;
         }
     }

@@ -13,7 +13,7 @@ class ProtectedRoute extends React.Component {
 
   render() {
       return(
-        <AuthRoute path={this.props.path} component={this.props.component} redirectTo="/login" authenticated={AuthService.isLoggedIn()} />
+        <AuthRoute path={this.props.path} component={this.props.component} redirectTo="/login" authenticated={this.props.isAuthenticated} />
       )
   }
 }

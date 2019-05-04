@@ -29,9 +29,9 @@ class SideInfo extends Component {
   }
   
   render(){
-    if(!AuthService.isLoggedIn()) {
-      return(<Redirect path="/login"/>)
-    }
+    // if(!this.props.isAuthenticated) {
+    //   return(<Redirect path="/login"/>)
+    // }
     return(
       <Jumbotron>
             <h2 >Time to refresh data: {this.props.globalTimer }s</h2>

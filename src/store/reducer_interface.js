@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
       clientModalResource: state.clientModalResource,      
       clients: state.clients,
       instances: state.instances,
-      isAuthenticated: state.isAuthenticated
+      isAuthenticated: state.isAuthenticated,
+      //jwtToken: state.jwtToken    #hidden
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -49,6 +50,7 @@ const mapDispatchToProps = (dispatch) => {
             client: client,
             modalVisibility: modalVisibility
         })
+
     }
 }
 

@@ -5,7 +5,7 @@ import { Row, Col, Table, Button, Nav, NavItem } from 'reactstrap';
 import NavBar from '../NavBar'
 import ApiService from '../../services/api-service'
 import ClientDetailsModal from './ClientDetailsModal'
-import { withRouter } from 'react-router-dom'
+//import { withRouter } from 'react-router-dom'
 class ClientsList extends React.Component {
 
     constructor(props) {
@@ -88,6 +88,7 @@ class ClientsList extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ClientsList));
+//export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ClientsList));
+export default connect(mapStateToProps, mapDispatchToProps)(ClientsList);
 
 

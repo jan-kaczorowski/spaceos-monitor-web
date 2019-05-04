@@ -1,25 +1,23 @@
 
+import store from '../store/store'
+
 const jwt = require('jsonwebtoken')
 
 class AuthService  {
     static instance = new AuthService()
 
     constructor() {
+
         this.jwt_key_name = 'JWT_TOKEN'
         this.config = null;
+      
+        // console.log('Kwik 1')
+        // setTimeout(()=> {
+        //     store.dispatch({type: 'AUTHORIZE'}) 
+        //     console.log('Kwik 2')
+        // }, 4000)
+       
         
-        // setInterval(()=>{
-        //     console.log('tik tak')
-        //     const curr_val =  JSON.parse(localStorage.getItem('AAA'))
-        //     if(curr_val === true) {
-        //         localStorage.setItem('AAA','false') 
-        //     } else if (curr_val=== false) {
-        //         localStorage.setItem('AAA','true')
-        //     } else {
-        //         localStorage.setItem('AAA','false')
-        //     }
-        //     console.log('Value n: ',curr_val)
-        // },3000)
     }
 
     responseGoogle(arg) {
@@ -32,46 +30,67 @@ class AuthService  {
                 ).then( (response ) => {
                     console.log('RES SOS_backend: ' + JSON.stringify(response))
                     return response.json()
-                })
-                    .then((json) => {
-                    localStorage.setItem(this.jwt_key_name,json.jwt)
+                }).then((json) => {
+                    this.saveToken(json.jwt)
+                    this.checkAuthentication();
+                }).catch(err => {
+                    console.log("ERROR: "+err)
                 })
             }
         )
     }
 
+
+    checkAuthentication() {
+        if(this.isLoggedIn()){
+            store.dispatch({type: 'AUTHORIZE'}) 
+            return true;
+        } else this.logout()
+    }
+
+    saveToken(jwt_token) {
+        store.dispatch({type: 'SAVE_JWT_TOKEN', jwtToken: jwt_token}) 
+        localStorage.setItem(this.jwt_key_name,jwt_token)
+    }
+
     isLoggedIn() {
-        let res = (typeof this.decodedToken()) && this.isTokenValid()
-        //res = JSON.parse(localStorage.getItem('AAA'))
+        const decoded_token = this.decodedToken();
+        let res = (typeof decoded_token === 'object') && this.isTokenValid(decoded_token)
         console.log('isLoggedIn',res)
         return res
     }
 
     logout() {
+        console.log('Logging out')
         localStorage.removeItem(this.jwt_key_name)
+        localStorage.removeItem('DECODED_JWT_TOKEN')
+        store.dispatch({type: 'LOGOUT'})
         return false;
     }
 
     getToken() {
-        const jwt_token = localStorage.getItem(this.jwt_key_name)
+        //take token from redux store
+        let jwt_token = store.getState().jwtToken
+        // ..or take it from LocalStorage (fallback)
+        if (jwt_token === null) {
+            jwt_token = localStorage.getItem(this.jwt_key_name)
+        }
+        
         if(typeof jwt_token === 'string') {
             return jwt_token;
         }
         else return null;
     }
 
-    isTokenValid() {
-        if(this.decodedToken()) {
-            const expDate = new Date(this.decodedToken().exp * 1000)
+    isTokenValid(decoded_token) {
+        if(decoded_token) {
+            const expDate = new Date(decoded_token.exp * 1000)
             if(expDate > (new Date())) {
                 return true;
             } else {
-                this.destroyToken()
                 return false;
             }
-
         } else {
-            this.destroyToken()
             return false
         }
     }
@@ -98,10 +117,10 @@ class AuthService  {
         })
     }
 
-    destroyToken() {
-        localStorage.removeItem(this.jwt_key_name)
-        localStorage.removeItem('DECODED_JWT_TOKEN')
-    }
+    // destroyToken() {
+    //     localStorage.removeItem(this.jwt_key_name)
+    //     localStorage.removeItem('DECODED_JWT_TOKEN')
+    // }
 
 }
 
