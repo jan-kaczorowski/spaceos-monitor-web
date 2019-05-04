@@ -2,29 +2,31 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import AuthService from '../services/auth-service'
+import ApiService from '../services/api-service'
 import { GoogleLogin } from 'react-google-login';
 import { Form, FormGroup, Jumbotron, Row, Col, Input } from 'reactstrap';
 
 class LoginScreen extends Component {
 
-    constructor(props){
-        super(props)
-        this.state = { config: null}
-    }
+    // constructor(props){
+    //     super(props)
+    //     //this.state = { config: null}
+        
+    // }
 
-    componentDidMount() {
-        AuthService.getConfig().then((cfg_data)=>{
-            console.log('cfg data',cfg_data)
-            this.setState((state)=> {
-                state.config = cfg_data
-                return state;
-            })
-        })
-
-    }
+    // componentDidMount() {
+    //     console.log('API SERVICE', ApiService)
+    //     ApiService.getConfig().then((cfg_data)=>{
+    //         console.log('cfg data',cfg_data)
+    //         this.setState((state)=> {
+    //             state.config = cfg_data
+    //             return state;
+    //         })
+    //     })
+    // }
 
     render() {
-        if(this.state.config) {
+        if(this.props.config) {
                 return(
                     <div className="login-form-container">
                         
@@ -38,15 +40,15 @@ class LoginScreen extends Component {
                             <Col xs="10" md="4" className="p-0">
        
                                 <GoogleLogin
-                                clientId={this.state.config.clientId}
+                                clientId={this.props.config.google_api_client_id}
                                 buttonText="Login"
                                 className="google-login-button"
                                 responseType="code"
                                 accessType="offline"
                                 uxMode="popup"
-                                redirectUri="https://spaceos-monitor.jankaczorowski.pl/oauth/google/callback"
+                                redirectUri={this.props.config.google_api_redirect_uri}
                                 fetchBasicProfile={false}
-                                scope={this.state.config.scope}
+                                scope={this.props.config.google_api_scope}
                                 onSuccess={AuthService.responseGoogle.bind(AuthService)}
                                 onFailure={AuthService.responseGoogle.bind(AuthService)}
                             />

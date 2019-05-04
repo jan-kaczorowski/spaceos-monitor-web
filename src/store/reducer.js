@@ -6,7 +6,8 @@ const initialState = {
     initialInstanceTypeFilter: null,
     initialInstanceNameFilter: '',
     isAuthenticated: false,
-    jwtToken: null
+    jwtToken: null,
+    config: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -70,6 +71,11 @@ const reducer = (state = initialState, action) => {
             break;
         }
 
+        case 'SAVE_CONFIG': {
+            newState.config = action.config_data;
+            break;
+        }
+
         default: {
             newState.globalTimer = initialState.globalTimer;
             newState.instanceNameFilter = initialState.initialInstanceNameFilter;
@@ -83,6 +89,7 @@ const reducer = (state = initialState, action) => {
             newState.instances = []
             newState.isAuthenticated = initialState.isAuthenticated;
             newState.jwtToken = initialState.jwtToken;
+            newState.config = null
             break;
         }
     }

@@ -1,5 +1,6 @@
 
 import store from '../store/store'
+import ApiService from './api-service'
 
 const jwt = require('jsonwebtoken')
 
@@ -9,7 +10,7 @@ class AuthService  {
     constructor() {
 
         this.jwt_key_name = 'JWT_TOKEN'
-        this.config = null;
+        //this.config = null;
       
         // console.log('Kwik 1')
         // setTimeout(()=> {
@@ -21,12 +22,15 @@ class AuthService  {
     }
 
     responseGoogle(arg) {
-        let scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+        
+        //let scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
         console.info('responseGoogle' + JSON.stringify(arg))
-        this.getConfig().then(
+        console.log('API SERVICE', ApiService)
+        ApiService.getConfig().then(
             ()=>{
+                const config = store.getState().config
                 fetch(
-                    `https://spaceos-monitor.jankaczorowski.pl/oauth/google/callback?code=${arg.code}&scope=${scope}&client_id=${this.config.clientId}`
+                    `https://spaceos-monitor.jankaczorowski.pl/oauth/google/callback?code=${arg.code}&scope=${config.google_api_scope}&client_id=${config.google_api_client_id}`
                 ).then( (response ) => {
                     console.log('RES SOS_backend: ' + JSON.stringify(response))
                     return response.json()
@@ -34,7 +38,7 @@ class AuthService  {
                     this.saveToken(json.jwt)
                     this.checkAuthentication();
                 }).catch(err => {
-                    console.log("ERROR: "+err)
+                    console.log("ERROR: "+JSON.stringify(err))
                 })
             }
         )
@@ -72,10 +76,11 @@ class AuthService  {
         //take token from redux store
         let jwt_token = store.getState().jwtToken
         // ..or take it from LocalStorage (fallback)
+        console.log("get token 1", jwt_token)
         if (jwt_token === null) {
             jwt_token = localStorage.getItem(this.jwt_key_name)
         }
-        
+        console.log("get token 2", jwt_token)
         if(typeof jwt_token === 'string') {
             return jwt_token;
         }
@@ -104,18 +109,7 @@ class AuthService  {
         } else return null;
     }
 
-    getConfig() {
-        return new Promise((resolve,reject)=>{
-            setTimeout(()=>{
-                const config_data = {
-                    clientId: '809444742970-it8fsvjt7genve9u9qh1iclcmf6vuanc.apps.googleusercontent.com',
-                    scope: 'email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
-                };
-                this.config = config_data
-                resolve(config_data)
-            },100)
-        })
-    }
+
 
     // destroyToken() {
     //     localStorage.removeItem(this.jwt_key_name)

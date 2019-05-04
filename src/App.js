@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Redirect, withRouter } from 'react-router-dom'
 import LoginScreen from './components/LoginScreen';
 import AuthService from './services/auth-service'
+import ApiService from './services/api-service'
 import { UnauthRoute, AuthRoute } from 'react-router-auth'
 import ProtectedRoute from './components/ProtectedRoute'
 import { mapDispatchToProps, mapStateToProps } from './store/reducer_interface'
@@ -14,17 +15,19 @@ import './App.css';
 import store from './store/store'
 class App extends Component {
 
-  // constructor() {
-  //   super()
-  //   setTimeout(()=> store.dispatch({type: 'AUTHORIZE'}) , 4000)
-    
-  // }
+  constructor() {
+    super()
+    //setTimeout(()=> store.dispatch({type: 'AUTHORIZE'}) , 4000)
+    ApiService.getConfig()
+    AuthService.checkAuthentication();
+  }
+
   overlay() {
     return (this.props.isAuthenticated) ? '' : (<div className='overlay'></div>);
   }
 
   render() {
-
+    if(!this.props.config) return '';
     return (
       <div>
           {this.overlay()}

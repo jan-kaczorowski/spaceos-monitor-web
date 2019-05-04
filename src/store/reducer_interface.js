@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
       clients: state.clients,
       instances: state.instances,
       isAuthenticated: state.isAuthenticated,
+      config: state.config
       //jwtToken: state.jwtToken    #hidden
     }
 }
