@@ -15,7 +15,6 @@ import {
 import { Link } from 'react-router-dom';
 import { mapDispatchToProps, mapStateToProps } from '../store/reducer_interface'
 import { connect } from 'react-redux'
-//import { GoogleAPI, GoogleLogin } from 'react-google-oauth';
 
 class NavBar extends React.Component {
 

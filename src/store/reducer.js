@@ -62,6 +62,7 @@ const reducer = (state = initialState, action) => {
         }
 
         case 'SAVE_JWT_TOKEN': {
+            console.log('is Logged out!')
             newState.jwtToken = action.jwtToken
             break;
         }

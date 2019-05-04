@@ -48,16 +48,9 @@ class StatusChecker extends Component {
         this.props.toggleInstanceModal(new_instance, true)
     }
 
-
     componentDidUpdate(prevProps) {
         if ( (this.props.instanceTypeFilter !== prevProps.instanceTypeFilter) || 
-            (this.props.instanceNameFilter !== prevProps.instanceNameFilter) ) {
-
-            console.log('FILTERING BY TYPE: '+this.props.instanceNameFilter)
-            console.log('FILTERING BY NAME: '+this.props.instanceTypeFilter)
-
-            this.props.refreshInstances()
-        }
+            (this.props.instanceNameFilter !== prevProps.instanceNameFilter) ) { this.props.refreshInstances() }
     }
 
     render() {

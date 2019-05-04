@@ -1,7 +1,6 @@
 import AuthService from './auth-service'
 import store from '../store/store'
 class ApiService  {
-
     static instance = new ApiService()
 
     //apiRootPath = 'https://orange.jankaczorowski.pl/api'
@@ -46,14 +45,10 @@ class ApiService  {
 
     getEndpoint(relativePath) {
         if(!AuthService.checkAuthentication()) return;
-        console.log("TOKEN :"+AuthService.getToken() )
         return fetch(this.apiRootPath + relativePath, { 
             headers: this.commonHeaders()
         }).then(response => {
-            console.log('asad',response)
             if(response.status === 200) {
-                console.log("STORE",store.getState()) //not needed
-                console.log("STORE obj",store) //not needed
                 console.log(response)
                 return response.json()
             } else {
@@ -100,6 +95,5 @@ class ApiService  {
     }
 
 }
-
 
 export default ApiService.instance

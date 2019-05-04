@@ -8,22 +8,10 @@ class AuthService  {
     static instance = new AuthService()
 
     constructor() {
-
         this.jwt_key_name = 'JWT_TOKEN'
-        //this.config = null;
-      
-        // console.log('Kwik 1')
-        // setTimeout(()=> {
-        //     store.dispatch({type: 'AUTHORIZE'}) 
-        //     console.log('Kwik 2')
-        // }, 4000)
-       
-        
     }
 
     responseGoogle(arg) {
-        
-        //let scope="email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
         console.info('responseGoogle' + JSON.stringify(arg))
         console.log('API SERVICE', ApiService)
         ApiService.getConfig().then(
@@ -76,11 +64,9 @@ class AuthService  {
         //take token from redux store
         let jwt_token = store.getState().jwtToken
         // ..or take it from LocalStorage (fallback)
-        console.log("get token 1", jwt_token)
         if (jwt_token === null) {
             jwt_token = localStorage.getItem(this.jwt_key_name)
         }
-        console.log("get token 2", jwt_token)
         if(typeof jwt_token === 'string') {
             return jwt_token;
         }
@@ -108,14 +94,6 @@ class AuthService  {
             return decoded_token;
         } else return null;
     }
-
-
-
-    // destroyToken() {
-    //     localStorage.removeItem(this.jwt_key_name)
-    //     localStorage.removeItem('DECODED_JWT_TOKEN')
-    // }
-
 }
 
 export default AuthService.instance
