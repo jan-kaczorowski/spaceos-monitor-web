@@ -12,9 +12,9 @@ class CoreTableRowFragment extends React.Component {
     }
 
     hashToLink(instance) {
-        const hash = instance.backend_status_body.body.git_commit_data.commit_hash;
-        const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
-        if(hash) {
+        if(instance.backend_status_body.body.git_commit_data) {
+            const hash = instance.backend_status_body.body.git_commit_data.commit_hash;
+            const linkUrl = `https://github.com/SpaceOSLtd/core-wms/commit/${hash}`;
             return <a className="instance-link" href={linkUrl} target="_blank" rel="noopener noreferrer">#{hash}</a>  
         } else {
             return '';
@@ -22,9 +22,8 @@ class CoreTableRowFragment extends React.Component {
     }
 
     commitDate(instance) {
-        const timestamp = instance.backend_status_body.body.git_commit_data.commit_timestamp
-        if(timestamp) {
-            return <Moment date={new Date(timestamp)} format="D MMM YYYY" />
+        if(instance.backend_status_body.body.git_commit_data) {
+            return <Moment date={new Date(instance.backend_status_body.body.git_commit_data.commit_timestamp)} format="D MMM YYYY" />
         } else {
             return '';
         }
@@ -34,6 +33,17 @@ class CoreTableRowFragment extends React.Component {
         return instance.coreHealth.commit_subject
     }
 
+    committerName(instance) {
+        if(instance.backend_status_body.body.git_commit_data) {
+            return instance.backend_status_body.body.git_commit_data.committer_name;
+        } else return '';
+    }
+
+    commitSubject(instance) {
+        if(instance.backend_status_body.body.git_commit_data) {
+            return instance.backend_status_body.body.git_commit_data.commit_subject;
+        } else return '';
+    }
 
     render() {
         const instance = this.state.instance
@@ -41,10 +51,10 @@ class CoreTableRowFragment extends React.Component {
             return (
                 <React.Fragment>
                     <td className="left-border">
-                        { instance.backend_status_body.body.git_commit_data.committer_name }
+                        { this.committerName(instance) }
                     </td>
                     <td className="commit-msg">
-                        { instance.backend_status_body.body.git_commit_data.commit_subject   }
+                        { this.commitSubject(instance)  }
                     </td>
                     <td>
                         { this.commitDate(instance) }
