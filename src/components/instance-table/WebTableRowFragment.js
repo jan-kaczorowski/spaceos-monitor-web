@@ -22,7 +22,7 @@ class WebTableRowFragment extends React.Component {
     }
 
     commitDate(instance) {
-        const timestamp = instance.web_status_body.body.timestamp
+        const timestamp = instance.web_status_body.body.commit_timestamp
         if(timestamp) {
             return <Moment date={new Date(timestamp)} format="D MMM YYYY" />
         } else {
